@@ -14,10 +14,10 @@
             --primary-green: #00ff88;
             --primary-red: #ff3366;
             --primary-blue: #00aaff;
-            --dark-bg: #0a0a0f;
-            --darker-bg: #050508;
-            --text-primary: #e0e0e0;
-            --text-secondary: #a0a0a0;
+            --dark-bg: #ffffff;
+            --darker-bg: #f0f0f0;
+            --text-primary: #000000;
+            --text-secondary: #666666;
             --accent-glow: rgba(0, 255, 255, 0.3);
         }
 
@@ -29,7 +29,7 @@
 
         body {
             font-family: 'Orbitron', 'Share Tech Mono', monospace;
-            background: linear-gradient(135deg, #000000, #1a0033, #000033, #0a0a0f);
+            background: linear-gradient(135deg, #000000, #1a1a1a, #000000);
             color: var(--text-primary);
             overflow-x: hidden;
             min-height: 100vh;
@@ -39,7 +39,7 @@
             justify-content: center;
         }
 
-        /* Animated Background */
+        /* Dark Animated Background */
         .bg-animation {
             position: fixed;
             top: 0;
@@ -47,9 +47,9 @@
             width: 100%;
             height: 100%;
             background: 
-                radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 40%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+                radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
             animation: bgPulse 10s ease-in-out infinite;
             z-index: -3;
         }
@@ -59,7 +59,7 @@
             50% { opacity: 1; }
         }
 
-        /* Grid Background */
+        /* Dark Grid Background */
         .grid-bg {
             position: fixed;
             top: 0;
@@ -67,8 +67,8 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: gridMove 20s linear infinite;
             z-index: -2;
@@ -114,12 +114,10 @@
 
         /* Login Container */
         .login-container {
-            background: rgba(10, 10, 15, 0.9);
-            border: 2px solid var(--primary-cyan);
-            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.1);
             padding: 40px;
-            backdrop-filter: blur(10px);
-            box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.3);
             position: relative;
             z-index: 10;
             max-width: 400px;
@@ -184,8 +182,8 @@
         .form-input {
             width: 100%;
             padding: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid var(--primary-cyan);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             color: var(--text-primary);
             font-family: 'Share Tech Mono', monospace;
@@ -195,9 +193,9 @@
 
         .form-input:focus {
             outline: none;
-            border-color: var(--primary-magenta);
-            box-shadow: 0 0 20px rgba(255, 0, 255, 0.2);
-            background: rgba(0, 0, 0, 0.7);
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.15);
         }
 
         .form-input.error {
@@ -215,9 +213,9 @@
         .login-btn {
             width: 100%;
             padding: 15px;
-            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta));
-            color: var(--dark-bg);
-            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
             font-family: 'Orbitron', monospace;
             font-weight: bold;
@@ -237,7 +235,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
             transition: left 0.5s ease;
         }
 
@@ -246,8 +244,10 @@
         }
 
         .login-btn:hover {
+            border-color: var(--primary-cyan);
+            color: var(--text-primary);
             transform: translateY(-2px);
-            box-shadow: 0 10px 30px var(--accent-glow);
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.2);
         }
 
         .login-btn:active {
@@ -262,19 +262,19 @@
             text-align: center;
             font-size: 0.9rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             animation: fadeIn 0.5s ease-out;
         }
 
         .status-success {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--primary-green);
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid rgba(0, 255, 0, 0.2);
             color: var(--primary-green);
         }
 
         .status-error {
             background: rgba(255, 0, 0, 0.1);
-            border: 1px solid var(--primary-red);
+            border: 1px solid rgba(255, 0, 0, 0.2);
             color: var(--primary-red);
         }
 
