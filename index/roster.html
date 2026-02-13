@@ -28,6 +28,64 @@
             color: var(--primary-white);
             line-height: 1.6;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 75% 75%, rgba(255, 255, 255, 0.08) 0%, transparent 50%);
+            animation: backgroundPulse 12s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-white);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: floatDiagonal 15s infinite linear;
+        }
+
+        @keyframes floatDiagonal {
+            0% {
+                transform: translateY(100vh) translateX(-100px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
         }
 
         /* Navigation */
@@ -91,6 +149,18 @@
             padding: 100px 5%;
             background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
             position: relative;
+            animation: heroFadeIn 1.5s ease-out;
+        }
+
+        @keyframes heroFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero h1 {
@@ -98,6 +168,18 @@
             margin-bottom: 1rem;
             color: var(--primary-white);
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            animation: titleSlideIn 1s ease-out 0.3s both;
+        }
+
+        @keyframes titleSlideIn {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
         }
 
         .hero-subtitle {
@@ -105,6 +187,18 @@
             color: var(--accent-white);
             margin-bottom: 3rem;
             letter-spacing: 1px;
+            animation: subtitleFadeIn 1s ease-out 0.6s both;
+        }
+
+        @keyframes subtitleFadeIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .hero-stats {
@@ -120,14 +214,49 @@
             border-radius: 15px;
             padding: 2rem;
             text-align: center;
-            transition: all 0.4s ease;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             position: relative;
+            overflow: hidden;
+            animation: statCardSlideIn 1s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.2s; }
+        .stat-card:nth-child(2) { animation-delay: 0.4s; }
+        .stat-card:nth-child(3) { animation-delay: 0.6s; }
+        .stat-card:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes statCardSlideIn {
+            from {
+                transform: translateY(30px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .stat-card:hover::before {
+            left: 100%;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.05);
             background: var(--secondary-dark);
             border-color: var(--primary-white);
+            box-shadow: 0 15px 40px rgba(255, 255, 255, 0.15);
         }
 
         .stat-number {
@@ -135,6 +264,11 @@
             font-weight: bold;
             color: var(--primary-white);
             margin-bottom: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover .stat-number {
+            transform: scale(1.1);
         }
 
         .stat-label {
@@ -181,12 +315,33 @@
             text-align: center;
             transition: all 0.3s ease;
             position: relative;
+            animation: agentCardFadeIn 1s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .agent-card:nth-child(1) { animation-delay: 0.1s; }
+        .agent-card:nth-child(2) { animation-delay: 0.2s; }
+        .agent-card:nth-child(3) { animation-delay: 0.3s; }
+        .agent-card:nth-child(4) { animation-delay: 0.4s; }
+        .agent-card:nth-child(5) { animation-delay: 0.5s; }
+        .agent-card:nth-child(6) { animation-delay: 0.6s; }
+
+        @keyframes agentCardFadeIn {
+            from {
+                transform: translateY(40px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
         }
 
         .agent-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px) scale(1.03);
             background: var(--tertiary-dark);
             border-color: var(--primary-white);
+            box-shadow: 0 20px 40px rgba(255, 255, 255, 0.1);
         }
 
         .agent-name {
@@ -194,6 +349,12 @@
             font-weight: bold;
             color: var(--primary-white);
             margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .agent-card:hover .agent-name {
+            color: var(--primary-white);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
 
         .agent-role {
@@ -269,12 +430,45 @@
             transition: all 0.3s ease;
             text-decoration: none;
             display: inline-block;
+            position: relative;
+            overflow: hidden;
+            animation: buttonSlideUp 0.8s ease-out;
+        }
+
+        @keyframes buttonSlideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--primary-white);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
         }
 
         .btn:hover {
             background: var(--primary-white);
             color: var(--primary-dark);
             transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
         }
 
         .btn-primary {
@@ -334,6 +528,9 @@
     </style>
 </head>
 <body>
+    <!-- Animated Background Elements -->
+    <div class="particles" id="particles"></div>
+
     <nav>
         <h1>SCANORA</h1>
         <ul>
@@ -512,9 +709,27 @@
     </footer>
 
     <script>
-        // Add interactive functionality
+        // Particle System
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 45;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Interactive Elements
         document.addEventListener('DOMContentLoaded', function() {
-            // Button click effects
+            createParticles();
+            
+            // Add button click effects
             const buttons = document.querySelectorAll('.btn');
             buttons.forEach(button => {
                 button.addEventListener('click', function() {
@@ -522,18 +737,42 @@
                     buttons.forEach(btn => btn.classList.remove('btn-primary'));
                     // Add active class to clicked button
                     this.classList.add('btn-primary');
+                    
+                    // Add click animation
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
                 });
             });
 
-            // Card hover effects
+            // Add card hover effects
             const cards = document.querySelectorAll('.agent-card');
             cards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
-                    this.style.transform = 'translateY(-8px)';
+                    this.style.transform = 'translateY(-12px) scale(1.03)';
                 });
                 
                 card.addEventListener('mouseleave', function() {
-                    this.style.transform = 'translateY(0)';
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Add stat card animations
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    const number = this.querySelector('.stat-number');
+                    if (number) {
+                        number.style.transform = 'scale(1.2) rotate(5deg)';
+                    }
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    const number = this.querySelector('.stat-number');
+                    if (number) {
+                        number.style.transform = 'scale(1) rotate(0deg)';
+                    }
                 });
             });
 
@@ -549,6 +788,15 @@
                         });
                     }
                 });
+            });
+
+            // Add parallax effect to hero
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const hero = document.querySelector('.hero');
+                if (hero) {
+                    hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+                }
             });
         });
     </script>

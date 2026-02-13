@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCANORA - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #000000;
+            --secondary-dark: #1a1a1a;
+            --tertiary-dark: #2a2a2a;
+            --primary-white: #ffffff;
+            --secondary-white: #f5f5f5;
+            --accent-white: #e0e0e0;
+            --border-white: #cccccc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--primary-dark);
+            color: var(--primary-white);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.06) 0%, transparent 50%);
+            animation: dashboardPulse 14s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes dashboardPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-white);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: dashboardFloat 18s infinite linear;
+        }
+
+        @keyframes dashboardFloat {
+            0% {
+                transform: translateY(100vh) translateX(50px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.3;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(-50px);
+                opacity: 0;
+            }
+        }
+
+        /* Navigation */
+        nav {
+            background: var(--secondary-dark);
+            border-bottom: 2px solid var(--border-white);
+            padding: 1rem 5%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h1 {
+            color: var(--primary-white);
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: var(--secondary-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 0.5rem 1rem;
+        }
+
+        nav a:hover {
+            color: var(--primary-white);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-white);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        nav a:hover::after {
+            width: 80%;
+        }
+
+        /* Dashboard Container */
+        .dashboard-container {
+            padding: 2rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            animation: dashboardSlideIn 1s ease-out;
+        }
+
+        @keyframes dashboardSlideIn {
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .dashboard-header {
+            margin-bottom: 2rem;
+            animation: headerFadeIn 1s ease-out 0.2s both;
+        }
+
+        @keyframes headerFadeIn {
+            from {
+                transform: translateX(-30px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .dashboard-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-white);
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .dashboard-header h2:hover {
+            color: var(--primary-white);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .dashboard-header p {
+            color: var(--accent-white);
+            font-size: 1.1rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--secondary-dark);
+            border: 2px solid var(--border-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            animation: statCardBounce 1s ease-out;
+            animation-fill-mode: both;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes statCardBounce {
+            0% {
+                transform: translateY(-30px) scale(0.8);
+                opacity: 0;
+            }
+            60% {
+                transform: translateY(10px) scale(1.05);
+            }
+            100% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.05);
+            background: var(--tertiary-dark);
+            border-color: var(--primary-white);
+            box-shadow: 0 15px 35px rgba(255, 255, 255, 0.12);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            color: var(--primary-white);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary-white);
+            margin-bottom: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover .stat-number {
+            transform: scale(1.1);
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        .stat-label {
+            color: var(--accent-white);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-change {
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .stat-positive {
+            color: var(--primary-white);
+        }
+
+        .stat-negative {
+            color: var(--accent-white);
+        }
+
+        /* Charts Section */
+        .charts-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-card {
+            background: var(--secondary-dark);
+            border: 2px solid var(--border-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            border-color: var(--primary-white);
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            color: var(--primary-white);
+            font-weight: 600;
+        }
+
+        .chart-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-option {
+            background: transparent;
+            border: 1px solid var(--border-white);
+            color: var(--accent-white);
+            padding: 0.3rem 0.8rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .chart-option:hover,
+        .chart-option.active {
+            background: var(--primary-white);
+            color: var(--primary-dark);
+        }
+
+        .chart-placeholder {
+            height: 200px;
+            background: var(--tertiary-dark);
+            border: 1px solid var(--border-white);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-white);
+            font-size: 0.9rem;
+        }
+
+        /* Activity Feed */
+        .activity-section {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .activity-card {
+            background: var(--secondary-dark);
+            border: 2px solid var(--border-white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .activity-card:hover {
+            border-color: var(--primary-white);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .activity-title {
+            font-size: 1.2rem;
+            color: var(--primary-white);
+            font-weight: 600;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-white);
+            transition: all 0.3s ease;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item:hover {
+            background: var(--tertiary-dark);
+            margin: 0 -1rem;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--tertiary-dark);
+            border: 2px solid var(--border-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .activity-icon i {
+            color: var(--primary-white);
+            font-size: 1rem;
+        }
+
+        .activity-content {
+            flex: 1;
+        }
+
+        .activity-text {
+            color: var(--primary-white);
+            margin-bottom: 0.3rem;
+        }
+
+        .activity-time {
+            color: var(--accent-white);
+            font-size: 0.8rem;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .quick-action {
+            background: var(--tertiary-dark);
+            border: 2px solid var(--border-white);
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--primary-white);
+        }
+
+        .quick-action:hover {
+            background: var(--primary-white);
+            color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .quick-action i {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .quick-action span {
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem 5%;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .dashboard-container {
+                padding: 1rem 5%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .charts-section {
+                grid-template-columns: 1fr;
+            }
+
+            .activity-section {
+                grid-template-columns: 1fr;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Elements -->
+    <div class="particles" id="particles"></div>
+
+    <nav>
+        <h1>SCANORA</h1>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="register.html">Register</a></li>
+            <li><a href="login.html">Login</a></li>
+            <li><a href="roster.html">Roster</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h2>Intelligence Dashboard</h2>
+            <p>Real-time operational overview and analytics</p>
+        </div>
+
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <div class="stat-number">47</div>
+                <div class="stat-label">Active Agents</div>
+                <div class="stat-change stat-positive">+12% from last month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <div class="stat-number">156</div>
+                <div class="stat-label">Completed Missions</div>
+                <div class="stat-change stat-positive">+8% from last month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="stat-number">23</div>
+                <div class="stat-label">Active Threats</div>
+                <div class="stat-change stat-negative">-5% from last month</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="stat-number">98%</div>
+                <div class="stat-label">Success Rate</div>
+                <div class="stat-change stat-positive">+2% from last month</div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-section">
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Mission Success Rate</div>
+                    <div class="chart-options">
+                        <button class="chart-option active">Week</button>
+                        <button class="chart-option">Month</button>
+                        <button class="chart-option">Year</button>
+                    </div>
+                </div>
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-line" style="font-size: 3rem; margin-right: 1rem;"></i>
+                    Mission Analytics Chart
+                </div>
+            </div>
+
+            <div class="chart-card">
+                <div class="chart-header">
+                    <div class="chart-title">Threat Level Overview</div>
+                    <div class="chart-options">
+                        <button class="chart-option active">Live</button>
+                        <button class="chart-option">Historical</button>
+                    </div>
+                </div>
+                <div class="chart-placeholder">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 3rem; margin-right: 1rem;"></i>
+                    Threat Intelligence Chart
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Section -->
+        <div class="activity-section">
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-title">Recent Activity</div>
+                    <button class="chart-option">View All</button>
+                </div>
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-user-check"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">Agent qtn completed surveillance mission</div>
+                            <div class="activity-time">2 minutes ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">New security protocol activated</div>
+                            <div class="activity-time">15 minutes ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">Intelligence report uploaded from field agent</div>
+                            <div class="activity-time">1 hour ago</div>
+                        </div>
+                    </li>
+                    <li class="activity-item">
+                        <div class="activity-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="activity-content">
+                            <div class="activity-text">Team meeting scheduled for tomorrow</div>
+                            <div class="activity-time">2 hours ago</div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="activity-card">
+                <div class="activity-header">
+                    <div class="activity-title">Quick Actions</div>
+                </div>
+                <div class="quick-actions">
+                    <a href="#" class="quick-action">
+                        <i class="fas fa-plus"></i>
+                        <span>New Mission</span>
+                    </a>
+                    <a href="#" class="quick-action">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Add Agent</span>
+                    </a>
+                    <a href="#" class="quick-action">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Generate Report</span>
+                    </a>
+                    <a href="#" class="quick-action">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" class="quick-action">
+                        <i class="fas fa-bell"></i>
+                        <span>Alerts</span>
+                    </a>
+                    <a href="#" class="quick-action">
+                        <i class="fas fa-chart-bar"></i>
+                        <span>Analytics</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Particle System
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 35;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 18 + 's';
+                particle.style.animationDuration = (18 + Math.random() * 12) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Interactive Elements
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Chart option switching
+            const chartOptions = document.querySelectorAll('.chart-option');
+            chartOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remove active class from siblings
+                    const siblings = this.parentElement.querySelectorAll('.chart-option');
+                    siblings.forEach(sibling => sibling.classList.remove('active'));
+                    // Add active class to clicked option
+                    this.classList.add('active');
+                    
+                    // Add click animation
+                    this.style.transform = 'scale(0.9)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+
+            // Quick action interactions
+            const quickActions = document.querySelectorAll('.quick-action');
+            quickActions.forEach(action => {
+                action.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const actionText = this.querySelector('span').textContent;
+                    console.log(`Quick action clicked: ${actionText}`);
+                    
+                    // Add click animation
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
+            });
+
+            // Activity item interactions
+            const activityItems = document.querySelectorAll('.activity-item');
+            activityItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    console.log('Activity item clicked:', this.querySelector('.activity-text').textContent);
+                    
+                    // Add click effect
+                    this.style.background = 'var(--primary-dark)';
+                    setTimeout(() => {
+                        this.style.background = '';
+                    }, 300);
+                });
+            });
+
+            // Add stat card hover effects
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-12px) scale(1.05)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+
+            // Simulate real-time updates
+            function updateStats() {
+                const statNumbers = document.querySelectorAll('.stat-number');
+                statNumbers.forEach(stat => {
+                    const currentValue = stat.textContent;
+                    if (currentValue.includes('%')) {
+                        // Simulate percentage changes
+                        const numValue = parseInt(currentValue);
+                        const change = Math.random() > 0.5 ? 1 : -1;
+                        const newValue = Math.max(0, Math.min(100, numValue + change));
+                        stat.textContent = newValue + '%';
+                        
+                        // Add pulse animation
+                        stat.style.animation = 'pulse 0.5s ease';
+                        setTimeout(() => {
+                            stat.style.animation = '';
+                        }, 500);
+                    }
+                });
+            }
+
+            // Update stats every 30 seconds (simulated real-time data)
+            setInterval(updateStats, 30000);
+
+            // Add pulse animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>

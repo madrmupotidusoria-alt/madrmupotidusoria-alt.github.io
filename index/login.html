@@ -30,6 +30,65 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+            animation: backgroundShift 10s ease-in-out infinite;
+            z-index: -1;
+        }
+
+        @keyframes backgroundShift {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Floating Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-white);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: floatUp 12s infinite linear;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(-100px);
+                opacity: 0;
+            }
         }
 
         /* Navigation */
@@ -94,6 +153,7 @@
             justify-content: center;
             align-items: center;
             padding: 2rem;
+            position: relative;
         }
 
         .login-form {
@@ -104,10 +164,54 @@
             width: 100%;
             max-width: 400px;
             text-align: center;
+            animation: loginSlideIn 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes loginSlideIn {
+            from {
+                transform: translateY(-50px) scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .login-form::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-white), var(--accent-white), var(--primary-white));
+            border-radius: 15px;
+            z-index: -1;
+            animation: borderGlow 3s linear infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
         }
 
         .login-header {
             margin-bottom: 2rem;
+            animation: fadeInDown 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
         .login-header h2 {
@@ -166,12 +270,38 @@
             transition: all 0.3s ease;
             font-size: 1rem;
             margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            animation: buttonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--primary-white);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 400px;
+            height: 400px;
         }
 
         .btn:hover {
-            background: var(--primary-white);
             color: var(--primary-dark);
             transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
         }
 
         .login-footer {
@@ -236,6 +366,9 @@
     </style>
 </head>
 <body>
+    <!-- Animated Background Elements -->
+    <div class="particles" id="particles"></div>
+
     <nav>
         <h1>SCANORA</h1>
         <ul>
@@ -278,54 +411,70 @@
     </div>
 
     <script>
+        // Particle System
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 40;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 12 + 's';
+                particle.style.animationDuration = (12 + Math.random() * 8) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
-            const loginForm = document.getElementById('loginForm');
-            const alertContainer = document.getElementById('alertContainer');
-
-            loginForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-
-                // Simple validation (in production, this would be server-side)
-                if (username === 'tbny' && password === 'admin123') {
-                    showAlert('Login successful! Redirecting...', 'success');
-                    
-                    // Store session
-                    sessionStorage.setItem('isLoggedIn', 'true');
-                    sessionStorage.setItem('username', username);
-                    
-                    // Redirect to index after delay
-                    setTimeout(() => {
-                        window.location.href = 'index.html';
-                    }, 2000);
-                } else {
-                    showAlert('Invalid username or password', 'error');
-                }
+            createParticles();
+            
+            // Add form input animations
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach((input, index) => {
+                input.style.animation = `fadeInUp 0.6s ease-out ${0.1 * index}s both`;
             });
 
-            function showAlert(message, type) {
-                alertContainer.innerHTML = `
-                    <div class="alert alert-${type}">
-                        ${message}
-                    </div>
-                `;
-                
-                // Clear alert after 3 seconds
-                setTimeout(() => {
-                    alertContainer.innerHTML = '';
-                }, 3000);
+            // Add button click effect
+            const loginBtn = document.querySelector('.btn');
+            if (loginBtn) {
+                loginBtn.addEventListener('click', function(e) {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = 'scale(1)';
+                    }, 200);
+                });
             }
 
-            // Check if already logged in
-            if (sessionStorage.getItem('isLoggedIn') === 'true') {
-                showAlert('You are already logged in. Redirecting...', 'success');
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 2000);
-            }
+            // Add input focus effects
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'scale(1.02)';
+                    this.parentElement.style.transition = 'transform 0.3s ease';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'scale(1)';
+                });
+            });
         });
+
+        // Add animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeInUp {
+                from {
+                    transform: translateY(20px);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateY(0);
+                    opacity: 1;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
