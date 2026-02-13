@@ -1,10 +1,1248 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Scanora</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCANORA - CYBER OSINT PLATFORM</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap');
+        
+        :root {
+            --primary-cyan: #00ffff;
+            --primary-magenta: #ff00ff;
+            --primary-yellow: #ffff00;
+            --primary-green: #00ff88;
+            --primary-red: #ff3366;
+            --primary-blue: #00aaff;
+            --dark-bg: #0a0a0f;
+            --darker-bg: #050508;
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --accent-glow: rgba(0, 255, 255, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Orbitron', 'Share Tech Mono', monospace;
+            background: linear-gradient(135deg, #000000, #1a0033, #000033, #0a0a0f);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 255, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(0, 255, 136, 0.05) 0%, transparent 50%);
+            animation: bgPulse 10s ease-in-out infinite;
+            z-index: -3;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(0, 255, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: gridMove 20s linear infinite;
+            z-index: -2;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        /* Particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--primary-cyan);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary-cyan);
+            animation: particleFloat 15s linear infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { 
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { 
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Main Container */
+        .container {
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 10, 15, 0.9);
+            border-bottom: 2px solid var(--primary-cyan);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { 
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--primary-cyan);
+            text-shadow: 0 0 20px var(--primary-cyan);
+            animation: logoGlow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes logoGlow {
+            from { text-shadow: 0 0 20px var(--primary-cyan); }
+            to { text-shadow: 0 0 30px var(--primary-cyan), 0 0 40px var(--primary-magenta); }
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--dark-bg);
+            animation: rotate 4s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Navigation */
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 10px;
+        }
+
+        nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 12px 20px;
+            border: 1px solid var(--primary-cyan);
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--primary-cyan), transparent);
+            transition: left 0.5s ease;
+        }
+
+        nav a:hover::before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+            box-shadow: 0 0 20px var(--accent-glow);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        main {
+            flex: 1;
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta), var(--primary-green));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px var(--accent-glow);
+            animation: textPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes textPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* OSINT Dashboard */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .card {
+            background: rgba(10, 10, 15, 0.8);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta), var(--primary-green));
+            border-radius: 15px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .card:hover::before {
+            opacity: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .card h3 {
+            color: var(--primary-cyan);
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta));
+            color: var(--dark-bg);
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+
+        .btn:hover::after {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        /* Terminal Section */
+        .terminal {
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid var(--primary-green);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Share Tech Mono', monospace;
+            margin-bottom: 40px;
+            animation: fadeInUp 1s ease-out 0.8s both;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--primary-green);
+        }
+
+        .terminal-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .dot.red { background: var(--primary-red); }
+        .dot.yellow { background: var(--primary-yellow); }
+        .dot.green { background: var(--primary-green); }
+
+        .terminal-title {
+            margin-left: auto;
+            color: var(--primary-green);
+            font-size: 0.9rem;
+        }
+
+        .terminal-body {
+            color: var(--primary-green);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .terminal-line {
+            margin-bottom: 5px;
+            animation: typewriter 0.5s ease-out;
+        }
+
+        @keyframes typewriter {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .terminal-prompt {
+            color: var(--primary-cyan);
+        }
+
+        /* Status Bar */
+        .status-bar {
+            background: rgba(10, 10, 15, 0.9);
+            border-top: 1px solid var(--primary-cyan);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-green);
+            animation: statusPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Dashboard Section Styles */
+        .content-section {
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(10, 10, 15, 0.8);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        .stat-card h3 {
+            color: var(--primary-cyan);
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary-green);
+            margin-bottom: 10px;
+        }
+
+        .stat-change {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .activity-feed {
+            background: rgba(10, 10, 15, 0.8);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+        }
+
+        .activity-feed h3 {
+            color: var(--primary-cyan);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .activity-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-time {
+            color: var(--primary-yellow);
+            font-size: 0.9rem;
+            min-width: 100px;
+        }
+
+        .activity-desc {
+            color: var(--text-secondary);
+            flex: 1;
+            margin-left: 20px;
+        }
+
+        /* Webmail Styles */
+        .webmail-interface {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            background: rgba(10, 10, 15, 0.8);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .mail-sidebar {
+            border-right: 1px solid rgba(0, 255, 255, 0.2);
+            padding-right: 20px;
+        }
+
+        .mail-folder {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mail-folder:hover {
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .mail-folder.active {
+            background: var(--primary-cyan);
+            color: var(--dark-bg);
+        }
+
+        .folder-icon {
+            font-size: 1.2rem;
+        }
+
+        .folder-count {
+            margin-left: auto;
+            background: var(--primary-magenta);
+            color: var(--dark-bg);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .mail-content {
+            padding-left: 20px;
+        }
+
+        .mail-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .mail-btn {
+            padding: 8px 16px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta));
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .mail-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        .mail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mail-item {
+            padding: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .mail-item:hover {
+            background: rgba(0, 255, 255, 0.05);
+            transform: translateX(5px);
+        }
+
+        .mail-item.unread {
+            border-left: 4px solid var(--primary-cyan);
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        .mail-sender {
+            color: var(--primary-cyan);
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .mail-subject {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .mail-preview {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .mail-time {
+            color: var(--primary-yellow);
+            font-size: 0.8rem;
+            text-align: right;
+        }
+
+        /* Roster Styles */
+        .roster-controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .roster-btn {
+            padding: 10px 20px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta));
+            color: var(--dark-bg);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .roster-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px var(--accent-glow);
+        }
+
+        .roster-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .agent-card {
+            background: rgba(10, 10, 15, 0.8);
+            border: 1px solid var(--primary-cyan);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .agent-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px var(--accent-glow);
+        }
+
+        .agent-avatar {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, var(--primary-cyan), var(--primary-magenta));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--dark-bg);
+        }
+
+        .agent-info {
+            flex: 1;
+        }
+
+        .agent-info h4 {
+            color: var(--primary-cyan);
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .agent-role {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .agent-status {
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .agent-status.online {
+            background: var(--primary-green);
+            color: var(--dark-bg);
+        }
+
+        .agent-status.offline {
+            background: var(--primary-red);
+            color: var(--dark-bg);
+        }
+
+        .agent-status.busy {
+            background: var(--primary-yellow);
+            color: var(--dark-bg);
+        }
+
+        .agent-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .agent-stats .stat {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+    </style>
 </head>
 <body>
-  <h1>It works 🔥</h1>
-  <p>Scanora is live.</p>
+    <!-- Background Elements -->
+    <div class="bg-animation"></div>
+    <div class="grid-bg"></div>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="header-content">
+                <div class="logo">
+                    <div class="logo-icon">S</div>
+                    <span>SCANORA</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#dashboard">Dashboard</a></li>
+                        <li><a href="#webmail">Webmail</a></li>
+                        <li><a href="#roster">Roster</a></li>
+                        <li><a href="#tools">Tools</a></li>
+                        <li><a href="#intel">Intel</a></li>
+                        <li><a href="#missions">Missions</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section">
+                <div class="hero">
+                    <h1>Command Dashboard</h1>
+                    <p>Real-time operational overview and system status monitoring</p>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">📊</div>
+                        <h3>Active Operations</h3>
+                        <div class="stat-value">24</div>
+                        <div class="stat-change">+3 from last hour</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🎯</div>
+                        <h3>Threats Neutralized</h3>
+                        <div class="stat-value">156</div>
+                        <div class="stat-change">+12 today</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">🌐</div>
+                        <h3>Network Nodes</h3>
+                        <div class="stat-value">1,247</div>
+                        <div class="stat-change">98% online</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon">⚡</div>
+                        <h3>System Load</h3>
+                        <div class="stat-value">67%</div>
+                        <div class="stat-change">Optimal range</div>
+                    </div>
+                </div>
+
+                <div class="activity-feed">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-item">
+                        <div class="activity-time">2 min ago</div>
+                        <div class="activity-desc">APT-28 signature detected in Sector 7</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-time">15 min ago</div>
+                        <div class="activity-desc">Vulnerability scan completed on target infrastructure</div>
+                    </div>
+                    <div class="activity-item">
+                        <div class="activity-time">1 hour ago</div>
+                        <div class="activity-desc">New intelligence report uploaded from field agent</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Webmail Section -->
+            <section id="webmail" class="content-section" style="display: none;">
+                <div class="hero">
+                    <h1>Secure Webmail</h1>
+                    <p>Encrypted communication hub for covert operations</p>
+                </div>
+
+                <div class="webmail-interface">
+                    <div class="mail-sidebar">
+                        <div class="mail-folder active">
+                            <span class="folder-icon">📥</span>
+                            <span>Inbox</span>
+                            <span class="folder-count">12</span>
+                        </div>
+                        <div class="mail-folder">
+                            <span class="folder-icon">📤</span>
+                            <span>Sent</span>
+                            <span class="folder-count">8</span>
+                        </div>
+                        <div class="mail-folder">
+                            <span class="folder-icon">⭐</span>
+                            <span>Starred</span>
+                            <span class="folder-count">3</span>
+                        </div>
+                        <div class="mail-folder">
+                            <span class="folder-icon">🔒</span>
+                            <span>Secure</span>
+                            <span class="folder-count">5</span>
+                        </div>
+                        <div class="mail-folder">
+                            <span class="folder-icon">🗑️</span>
+                            <span>Trash</span>
+                            <span class="folder-count">2</span>
+                        </div>
+                    </div>
+
+                    <div class="mail-content">
+                        <div class="mail-toolbar">
+                            <button class="mail-btn">Compose</button>
+                            <button class="mail-btn">Refresh</button>
+                            <button class="mail-btn">Search</button>
+                        </div>
+
+                        <div class="mail-list">
+                            <div class="mail-item unread">
+                                <div class="mail-sender">Field Agent Alpha</div>
+                                <div class="mail-subject">URGENT: Target movement detected</div>
+                                <div class="mail-preview">Satellite imagery confirms convoy heading north...</div>
+                                <div class="mail-time">10:45</div>
+                            </div>
+                            <div class="mail-item unread">
+                                <div class="mail-sender">Command Center</div>
+                                <div class="mail-subject">New mission parameters uploaded</div>
+                                <div class="mail-preview">Operation Nightfall is go. See attached intel...</div>
+                                <div class="mail-time">09:30</div>
+                            </div>
+                            <div class="mail-item">
+                                <div class="mail-sender">Tech Division</div>
+                                <div class="mail-subject">System update completed</div>
+                                <div class="mail-preview">All nodes running latest security patches...</div>
+                                <div class="mail-time">Yesterday</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Roster Section -->
+            <section id="roster" class="content-section" style="display: none;">
+                <div class="hero">
+                    <h1>Agent Roster</h1>
+                    <p>Active personnel and operational status</p>
+                </div>
+
+                <div class="roster-controls">
+                    <button class="roster-btn">Add Agent</button>
+                    <button class="roster-btn">Export List</button>
+                    <button class="roster-btn">Status Report</button>
+                </div>
+
+                <div class="roster-grid">
+                    <div class="agent-card">
+                        <div class="agent-info">
+                            <h4>tbny</h4>
+                            <div class="agent-role">Owner</div>
+                            <div class="agent-status online">Online</div>
+                        </div>
+                    </div>
+
+                    <div class="agent-card">
+                        <div class="agent-info">
+                            <h4>qtn</h4>
+                            <div class="agent-role">Tech Specialist</div>
+                            <div class="agent-status online">Online</div>
+                        </div>
+                    </div>
+
+                    <div class="agent-card">
+                        <div class="agent-info">
+                            <h4>mar</h4>
+                            <div class="agent-role">Intelligence Analyst</div>
+                            <div class="agent-status offline">Offline</div>
+                        </div>
+                    </div>
+
+                    <div class="agent-card">
+                        <div class="agent-info">
+                            <h4>shimmy</h4>
+                            <div class="agent-role">Support Engineer</div>
+                            <div class="agent-status busy">Busy</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Dashboard -->
+            <section class="dashboard" id="dashboard">
+                <div class="card" style="animation-delay: 0.1s;">
+                    <div class="card-icon">🔍</div>
+                    <h3>Target Recon</h3>
+                    <p>Comprehensive reconnaissance tools for domain enumeration, subdomain discovery, and digital footprint analysis.</p>
+                    <a href="#" class="btn">Launch Recon</a>
+                </div>
+
+                <div class="card" style="animation-delay: 0.2s;">
+                    <div class="card-icon">🌐</div>
+                    <h3>Social Intel</h3>
+                    <p>Social media intelligence gathering, profile analysis, and relationship mapping across platforms.</p>
+                    <a href="#" class="btn">Analyze</a>
+                </div>
+
+                <div class="card" style="animation-delay: 0.3s;">
+                    <div class="card-icon">📡</div>
+                    <h3>Signal Intel</h3>
+                    <p>Radio frequency analysis, signal interception, and communication monitoring capabilities.</p>
+                    <a href="#" class="btn">Monitor</a>
+                </div>
+
+                <div class="card" style="animation-delay: 0.4s;">
+                    <div class="card-icon">🔓</div>
+                    <h3>Vuln Scanner</h3>
+                    <p>Automated vulnerability scanning, exploit detection, and security assessment tools.</p>
+                    <a href="#" class="btn">Scan Now</a>
+                </div>
+
+                <div class="card" style="animation-delay: 0.5s;">
+                    <div class="card-icon">🎯</div>
+                    <h3>Threat Hunter</h3>
+                    <p>Advanced threat hunting, IOC analysis, and malware detection systems.</p>
+                    <a href="#" class="btn">Hunt Threats</a>
+                </div>
+
+                <div class="card" style="animation-delay: 0.6s;">
+                    <div class="card-icon">📊</div>
+                    <h3>Data Mining</h3>
+                    <p>Deep web mining, dark web monitoring, and data extraction algorithms.</p>
+                    <a href="#" class="btn">Extract Data</a>
+                </div>
+            </section>
+
+            <!-- Terminal Section -->
+            <section class="terminal">
+                <div class="terminal-header">
+                    <div class="terminal-dots">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                    </div>
+                    <div class="terminal-title">SCANORA TERMINAL v4.0</div>
+                </div>
+                <div class="terminal-body" id="terminal">
+                    <div class="terminal-line"><span class="terminal-prompt">SCANORA></span> Initializing OSINT modules...</div>
+                    <div class="terminal-line"><span class="terminal-prompt">SCANORA></span> Loading threat intelligence database...</div>
+                    <div class="terminal-line"><span class="terminal-prompt">SCANORA></span> Establishing secure connections...</div>
+                    <div class="terminal-line"><span class="terminal-prompt">SCANORA></span> <span style="color: var(--primary-green);">✓ All systems operational</span></div>
+                    <div class="terminal-line"><span class="terminal-prompt">SCANORA></span> Ready for reconnaissance missions...</div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Status Bar -->
+        <footer class="status-bar">
+            <div class="status-item">
+                <div class="status-indicator"></div>
+                <span>System Online</span>
+            </div>
+            <div class="status-item">
+                <span>Active Scans: <span style="color: var(--primary-cyan);">3</span></span>
+            </div>
+            <div class="status-item">
+                <span>Threats Detected: <span style="color: var(--primary-red);">12</span></span>
+            </div>
+            <div class="status-item">
+                <span>CPU: <span style="color: var(--primary-yellow);">45%</span></span>
+            </div>
+            <div class="status-item">
+                <span>Network: <span style="color: var(--primary-green);">Secure</span></span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 5 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Terminal typing effect
+        function addTerminalLine(text, delay = 1000) {
+            setTimeout(() => {
+                const terminal = document.getElementById('terminal');
+                const line = document.createElement('div');
+                line.className = 'terminal-line';
+                line.innerHTML = `<span class="terminal-prompt">SCANORA></span> ${text}`;
+                terminal.appendChild(line);
+                terminal.scrollTop = terminal.scrollHeight;
+            }, delay);
+        }
+
+        // Interactive terminal
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            
+            // Add some dynamic terminal messages
+            addTerminalLine('Monitoring network traffic...', 2000);
+            addTerminalLine('Analyzing threat patterns...', 3000);
+            addTerminalLine('Updating intelligence database...', 4000);
+            addTerminalLine('<span style="color: var(--primary-cyan);">New threat detected: APT-28 activity</span>', 5000);
+            addTerminalLine('Initiating countermeasures...', 6000);
+
+            // Add click interactions to cards
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                card.addEventListener('click', function() {
+                    this.style.transform = 'scale(0.95)';
+                    setTimeout(() => {
+                        this.style.transform = '';
+                    }, 200);
+                });
+            });
+
+            // Add hover sound effect (visual feedback)
+            const buttons = document.querySelectorAll('.btn');
+            buttons.forEach(btn => {
+                btn.addEventListener('mouseenter', function() {
+                    this.style.boxShadow = '0 0 30px var(--accent-glow)';
+                });
+                btn.addEventListener('mouseleave', function() {
+                    this.style.boxShadow = '';
+                });
+            });
+
+            // Simulate real-time updates
+            setInterval(() => {
+                const activeScans = document.querySelector('.status-item:nth-child(2) span span');
+                const threatsDetected = document.querySelector('.status-item:nth-child(3) span span');
+                const cpu = document.querySelector('.status-item:nth-child(4) span span');
+                
+                if (activeScans) {
+                    activeScans.textContent = Math.floor(Math.random() * 5) + 1;
+                }
+                if (threatsDetected) {
+                    const currentThreats = parseInt(threatsDetected.textContent);
+                    threatsDetected.textContent = currentThreats + Math.floor(Math.random() * 3);
+                }
+                if (cpu) {
+                    cpu.textContent = Math.floor(Math.random() * 30) + 30 + '%';
+                }
+            }, 5000);
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                showSection(targetId);
+            });
+        });
+
+        // Tab switching functionality
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(sectionId);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+            // Update navigation active state
+            document.querySelectorAll('nav a').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`nav a[href="#${sectionId}"]`).classList.add('active');
+        }
+
+        // Show dashboard by default
+        showSection('dashboard');
+
+        // Add active state styling
+        const style = document.createElement('style');
+        style.textContent = `
+            nav a.active {
+                background: var(--primary-cyan);
+                color: var(--dark-bg);
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
 </body>
 </html>
