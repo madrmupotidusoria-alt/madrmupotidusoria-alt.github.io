@@ -43,6 +43,10 @@
             color: #fff;
             transform: translateY(-1px);
         }
+        .nav-button.active {
+            color: #3b82f6;
+            font-weight: 600;
+        }
         .form-input {
             background: #111827;
             border: 1px solid #374151;
@@ -208,6 +212,10 @@
                 }
                 if (item === 'Pricing') {
                     window.location.href = '/pricing.html';
+                    return;
+                }
+                if (item === 'Roster') {
+                    setCurrentPage('roster');
                     return;
                 }
                 setCurrentPage(item.toLowerCase());
@@ -600,13 +608,14 @@
                                 <button
                                     key={i}
                                     onClick={() => handleNavClick(item)}
-                                    className="nav-button"
+                                    className={`nav-button ${currentPage === item.toLowerCase() || (item === 'Roster' && currentPage === 'roster') ? 'active' : ''}`}
                                     style={{ 
-                                        color: '#9ca3af', 
+                                        color: currentPage === item.toLowerCase() || (item === 'Roster' && currentPage === 'roster') ? '#3b82f6' : '#9ca3af',
                                         fontSize: '14px',
                                         background: 'none',
                                         border: 'none',
-                                        cursor: 'pointer'
+                                        cursor: 'pointer',
+                                        fontWeight: currentPage === item.toLowerCase() || (item === 'Roster' && currentPage === 'roster') ? '600' : 'normal'
                                     }}
                                 >
                                     {item}
