@@ -54,6 +54,12 @@ function App() {
       return;
     }
 
+    if (item === 'Pricing') {
+      // Navigate to pricing page
+      window.location.href = '/pricing.html';
+      return;
+    }
+
     setCurrentPage(item.toLowerCase());
   };
 
@@ -310,7 +316,7 @@ function App() {
         <h1 className="text-2xl font-bold tracking-widest">SCANORA</h1>
 
         <div className="flex gap-8 text-sm text-gray-300">
-          {["Dashboard", "Register", "Login", "Roster", "Features", "About", "Discord"].map((item, i) => (
+          {["Dashboard", "Register", "Login", "Roster", "Features", "Pricing", "About", "Discord"].map((item, i) => (
             <button
               key={i}
               onClick={() => handleNavClick(item)}
