@@ -8,7 +8,7 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -93,6 +93,15 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        .error {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body>
@@ -102,11 +111,18 @@
         const { useState, useEffect } = React;
         const { createRoot } = ReactDOM;
 
-        // Supabase configuration
-        const supabaseUrl = 'https://sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72.supabase.co';
-        const supabaseKey = 'sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72';
-        const { createClient } = window.supabase;
-        const supabase = createClient(supabaseUrl, supabaseKey);
+        // Wait for Supabase to load
+        function initSupabase() {
+            if (typeof window.supabase === 'undefined') {
+                console.error('Supabase not loaded');
+                return null;
+            }
+            
+            const supabaseUrl = 'https://sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72.supabase.co';
+            const supabaseKey = 'sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72';
+            const { createClient } = window.supabase;
+            return createClient(supabaseUrl, supabaseKey);
+        }
 
         function App() {
             const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -115,24 +131,38 @@
             const [currentPage, setCurrentPage] = useState('home');
             const [user, setUser] = useState(null);
             const [loading, setLoading] = useState(false);
+            const [error, setError] = useState('');
+            const [supabase, setSupabase] = useState(null);
 
-            // Check for existing session on mount
+            // Initialize Supabase
             useEffect(() => {
-                const getSession = async () => {
-                    const { data: { session } } = await supabase.auth.getSession();
-                    setUser(session?.user ?? null);
-                    setIsLoggedIn(!!session?.user);
-                };
+                const client = initSupabase();
+                if (client) {
+                    setSupabase(client);
+                    
+                    // Check for existing session
+                    const getSession = async () => {
+                        try {
+                            const { data: { session } } = await client.auth.getSession();
+                            setUser(session?.user ?? null);
+                            setIsLoggedIn(!!session?.user);
+                        } catch (err) {
+                            console.error('Session check error:', err);
+                        }
+                    };
 
-                getSession();
+                    getSession();
 
-                // Listen for auth changes
-                const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-                    setUser(session?.user ?? null);
-                    setIsLoggedIn(!!session?.user);
-                });
+                    // Listen for auth changes
+                    const { data: { subscription } } = client.auth.onAuthStateChange((_event, session) => {
+                        setUser(session?.user ?? null);
+                        setIsLoggedIn(!!session?.user);
+                    });
 
-                return () => subscription.unsubscribe();
+                    return () => subscription.unsubscribe();
+                } else {
+                    setError('Failed to initialize Supabase. Please refresh the page.');
+                }
             }, []);
 
             const handleNavClick = (item) => {
@@ -163,7 +193,13 @@
 
             const handleLogin = async (e) => {
                 e.preventDefault();
+                if (!supabase) {
+                    setError('Supabase not initialized. Please refresh the page.');
+                    return;
+                }
+                
                 setLoading(true);
+                setError('');
                 const email = e.target.email.value;
                 const password = e.target.password.value;
                 
@@ -174,15 +210,16 @@
                     });
                     
                     if (error) {
-                        alert('Login error: ' + error.message);
+                        setError('Login error: ' + error.message);
                     } else {
                         setIsLoggedIn(true);
                         setShowLogin(false);
                         setCurrentPage('dashboard');
+                        setError('');
                         alert('Login successful!');
                     }
                 } catch (error) {
-                    alert('Login error: ' + error.message);
+                    setError('Login error: ' + error.message);
                 } finally {
                     setLoading(false);
                 }
@@ -190,7 +227,13 @@
 
             const handleRegister = async (e) => {
                 e.preventDefault();
+                if (!supabase) {
+                    setError('Supabase not initialized. Please refresh the page.');
+                    return;
+                }
+                
                 setLoading(true);
+                setError('');
                 const email = e.target.email.value;
                 const password = e.target.password.value;
                 const username = e.target.username.value;
@@ -207,24 +250,27 @@
                     });
                     
                     if (error) {
-                        alert('Registration error: ' + error.message);
+                        setError('Registration error: ' + error.message);
                     } else {
+                        setError('');
                         alert('Registration successful! Please check your email to verify.');
                         setShowRegister(false);
                         setShowLogin(true);
                     }
                 } catch (error) {
-                    alert('Registration error: ' + error.message);
+                    setError('Registration error: ' + error.message);
                 } finally {
                     setLoading(false);
                 }
             };
 
             const handleLogout = async () => {
-                await supabase.auth.signOut();
-                setIsLoggedIn(false);
-                setUser(null);
-                setCurrentPage('home');
+                if (supabase) {
+                    await supabase.auth.signOut();
+                    setIsLoggedIn(false);
+                    setUser(null);
+                    setCurrentPage('home');
+                }
             };
 
             if (showLogin || showRegister) {
@@ -235,7 +281,7 @@
                             
                             <div style={{ display: 'flex', marginBottom: '30px', borderBottom: '1px solid #374151' }}>
                                 <button
-                                    onClick={() => { setShowLogin(true); setShowRegister(false); }}
+                                    onClick={() => { setShowLogin(true); setShowRegister(false); setError(''); }}
                                     style={{ 
                                         flex: 1, 
                                         padding: '12px', 
@@ -249,7 +295,7 @@
                                     Login
                                 </button>
                                 <button
-                                    onClick={() => { setShowRegister(true); setShowLogin(false); }}
+                                    onClick={() => { setShowRegister(true); setShowLogin(false); setError(''); }}
                                     style={{ 
                                         flex: 1, 
                                         padding: '12px', 
@@ -263,6 +309,8 @@
                                     Register
                                 </button>
                             </div>
+
+                            {error && <div className="error">{error}</div>}
 
                             {showLogin && (
                                 <form onSubmit={handleLogin}>
@@ -286,7 +334,7 @@
                             )}
 
                             <button
-                                onClick={() => { setShowLogin(false); setShowRegister(false); }}
+                                onClick={() => { setShowLogin(false); setShowRegister(false); setError(''); }}
                                 style={{ 
                                     width: '100%', 
                                     padding: '12px', 
