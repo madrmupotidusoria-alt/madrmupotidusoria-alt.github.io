@@ -102,6 +102,15 @@
             border: 1px solid rgba(239, 68, 68, 0.3);
             border-radius: 6px;
         }
+        .success {
+            color: #10b981;
+            font-size: 14px;
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 6px;
+        }
     </style>
 </head>
 <body>
@@ -216,7 +225,16 @@
                         setShowLogin(false);
                         setCurrentPage('dashboard');
                         setError('');
-                        alert('Login successful!');
+                        // Success message
+                        const successDiv = document.createElement('div');
+                        successDiv.className = 'success';
+                        successDiv.textContent = 'Login successful!';
+                        successDiv.style.cssText = 'color: #10b981; font-size: 14px; margin-top: 10px; padding: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px;';
+                        const form = document.querySelector('form');
+                        if (form && !form.querySelector('.success')) {
+                            form.appendChild(successDiv);
+                            setTimeout(() => successDiv.remove(), 3000);
+                        }
                     }
                 } catch (error) {
                     setError('Login error: ' + error.message);
@@ -253,7 +271,16 @@
                         setError('Registration error: ' + error.message);
                     } else {
                         setError('');
-                        alert('Registration successful! Please check your email to verify.');
+                        // Success message
+                        const successDiv = document.createElement('div');
+                        successDiv.className = 'success';
+                        successDiv.textContent = 'Registration successful! Please check your email to verify.';
+                        successDiv.style.cssText = 'color: #10b981; font-size: 14px; margin-top: 10px; padding: 10px; background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 6px;';
+                        const form = document.querySelector('form');
+                        if (form && !form.querySelector('.success')) {
+                            form.appendChild(successDiv);
+                            setTimeout(() => successDiv.remove(), 5000);
+                        }
                         setShowRegister(false);
                         setShowLogin(true);
                     }
