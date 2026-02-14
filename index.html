@@ -7,15 +7,48 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    :root{--accent-cyan:#00ffff;--accent-mag:#ff00ff;--accent-green:#00ff88;--bg1:#0a0a0f}
+    /* Theme variables (dark default) */
+    :root{
+      --accent-cyan:#00ffff;
+      --accent-mag:#ff00ff;
+      --accent-green:#00ff88;
+      --bg-start:#0a0a0f;
+      --bg-mid:#1a0033;
+      --bg-end:#000033;
+      --nav-bg:rgba(10,10,15,0.8);
+      --panel-bg:linear-gradient(135deg, rgba(0,255,255,0.03), rgba(255,0,255,0.02));
+      --text:#e0e0e0;
+      --muted:#cbd5e1;
+      --card-bg:rgba(0,255,255,0.03);
+      --card-border:rgba(0,255,255,0.12);
+      --footer-bg:rgba(10,10,15,0.8);
+    }
+
+    /* Light theme overrides */
+    [data-theme="light"]{
+      --accent-cyan:#006b6b;
+      --accent-mag:#b3008a;
+      --accent-green:#007f4f;
+      --bg-start:#ffffff;
+      --bg-mid:#f5f7fa;
+      --bg-end:#e9eef6;
+      --nav-bg:rgba(255,255,255,0.9);
+      --panel-bg:linear-gradient(135deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+      --text:#0b1220;
+      --muted:#334155;
+      --card-bg:rgba(10,20,30,0.03);
+      --card-border:rgba(10,20,30,0.08);
+      --footer-bg:rgba(255,255,255,0.9);
+    }
+
     *{box-sizing:border-box;margin:0;padding:0}
-    html,body{height:100%;font-family:'Orbitron', 'Courier New', monospace;background:linear-gradient(135deg,var(--bg1),#1a0033,#000033);color:#e0e0e0;overflow-x:hidden}
+    html,body{height:100%;font-family:'Orbitron', 'Courier New', monospace;background:linear-gradient(135deg,var(--bg-start),var(--bg-mid),var(--bg-end));color:var(--text);overflow-x:hidden}
 
     /* Background */
-    .bg-animation{position:fixed;inset:0;background:radial-gradient(circle at 20% 80%, rgba(0,255,255,0.08), transparent 40%), radial-gradient(circle at 80% 20%, rgba(255,0,255,0.06), transparent 40%), radial-gradient(circle at 40% 40%, rgba(0,255,136,0.03), transparent 40%);animation:bgPulse 10s ease-in-out infinite;z-index:-3}
+    .bg-animation{position:fixed;inset:0;background:radial-gradient(circle at 20% 80%, rgba(0,255,255,0.06), transparent 40%), radial-gradient(circle at 80% 20%, rgba(255,0,255,0.04), transparent 40%), radial-gradient(circle at 40% 40%, rgba(0,255,136,0.02), transparent 40%);animation:bgPulse 10s ease-in-out infinite;z-index:-3}
     @keyframes bgPulse{0%,100%{opacity:.6}50%{opacity:1}}
 
-    .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.06) 1px, transparent 1px);background-size:50px 50px;animation:gridMove 20s linear infinite;z-index:-2}
+    .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.04) 1px, transparent 1px);background-size:50px 50px;animation:gridMove 20s linear infinite;z-index:-2}
     @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
 
     .particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
@@ -23,34 +56,61 @@
     @keyframes particleFloat{0%{transform:translateY(100vh);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100vh);opacity:0}}
 
     /* Nav */
-    nav{display:flex;justify-content:space-between;align-items:center;padding:16px 6%;background:rgba(10,10,15,0.8);border-bottom:2px solid var(--accent-cyan);backdrop-filter:blur(8px);position:sticky;top:0;z-index:1000}
+    nav{display:flex;justify-content:space-between;align-items:center;padding:16px 6%;background:var(--nav-bg);border-bottom:2px solid var(--accent-cyan);backdrop-filter:blur(8px);position:sticky;top:0;z-index:1000}
+    nav .brand{display:flex;align-items:center;gap:12px}
     nav h1{color:var(--accent-cyan);font-size:22px;text-shadow:0 0 18px var(--accent-cyan)}
     nav ul{display:flex;gap:14px;list-style:none}
     nav a{text-decoration:none;color:inherit;padding:8px 14px;border-radius:20px;border:1px solid transparent;font-weight:600;letter-spacing:1px;transition:all .25s}
-    nav a:hover{color:var(--accent-cyan);border-color:var(--accent-cyan);transform:translateY(-2px);box-shadow:0 0 18px rgba(0,255,255,0.15)}
+    nav a:hover{color:var(--accent-cyan);border-color:var(--accent-cyan);transform:translateY(-2px);box-shadow:0 0 18px rgba(0,255,255,0.12)}
+
+    .theme-toggle{background:transparent;border:1px solid transparent;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:16px}
 
     /* Hero */
-    .hero{max-width:1100px;margin:36px auto;padding:80px 6%;text-align:center;border-radius:18px;border:2px solid var(--accent-cyan);background:linear-gradient(135deg, rgba(0,255,255,0.03), rgba(255,0,255,0.02));position:relative}
+    .hero{max-width:1100px;margin:36px auto;padding:80px 6%;text-align:center;border-radius:18px;border:2px solid var(--accent-cyan);background:var(--panel-bg);position:relative}
     .hero h2{font-size:42px;background:linear-gradient(45deg,var(--accent-cyan),var(--accent-mag),var(--accent-green));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:18px}
-    .hero p{max-width:720px;margin:0 auto 26px;color:#cbd5e1}
-    .btn{display:inline-block;padding:14px 26px;border-radius:14px;background:linear-gradient(45deg,var(--accent-cyan),var(--accent-mag),var(--accent-green));color:#081018;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;text-decoration:none;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(0,255,255,0.18);transition:transform .25s}
+    .hero p{max-width:720px;margin:0 auto 26px;color:var(--muted)}
+    .btn{display:inline-block;padding:14px 26px;border-radius:14px;background:linear-gradient(45deg,var(--accent-cyan),var(--accent-mag),var(--accent-green));color:#081018;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;text-decoration:none;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(0,255,255,0.12);transition:transform .25s}
     .btn:hover{transform:translateY(-4px)}
 
     /* Cards */
     .section{padding:64px 6%;text-align:center}
     .features{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:22px}
-    .card{min-width:260px;max-width:320px;background:rgba(0,255,255,0.03);border:2px solid rgba(0,255,255,0.12);padding:22px;border-radius:12px;transition:transform .25s,box-shadow .25s}
+    .card{min-width:260px;max-width:320px;background:var(--card-bg);border:2px solid var(--card-border);padding:22px;border-radius:12px;transition:transform .25s,box-shadow .25s}
     .card h3{color:var(--accent-cyan);margin-bottom:12px}
-    .card p{color:#cbd5e1;line-height:1.6}
-    .card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,255,255,0.08);background:rgba(255,0,255,0.04);border-color:var(--accent-mag)}
+    .card p{color:var(--muted);line-height:1.6}
+    .card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,255,255,0.06);background:rgba(255,0,255,0.02);border-color:var(--accent-mag)}
 
-    footer{padding:28px 6%;text-align:center;border-top:2px solid var(--accent-cyan);background:rgba(10,10,15,0.8);margin-top:40px}
+    footer{padding:28px 6%;text-align:center;border-top:2px solid var(--accent-cyan);background:var(--footer-bg);margin-top:40px;color:var(--muted)}
 
     /* ripple */
     .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.6);transform:scale(0);animation:ripple-animation .6s linear;pointer-events:none}
     @keyframes ripple-animation{to{transform:scale(4);opacity:0}}
 
     @media (max-width:768px){.hero h2{font-size:28px}.hero{padding:48px 6%;margin:20px}.features{flex-direction:column;align-items:center}.nav ul{flex-wrap:wrap}}
+    /* Dashboard layout */
+    .layout{display:flex;gap:20px;max-width:1200px;margin:20px auto;padding:0 6%}
+    aside.sidebar{width:260px;background:rgba(0,0,0,0.04);border-radius:12px;padding:14px;border:1px solid var(--card-border)}
+    aside.sidebar h3{margin-bottom:12px;color:var(--muted);font-size:14px}
+    .tool-list{display:flex;flex-direction:column;gap:8px}
+    .tool-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:transparent;border:1px solid transparent;cursor:pointer}
+    .tool-item:hover{background:rgba(0,0,0,0.03)}
+
+    .main{flex:1}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:12px}
+    .search{flex:1;display:flex;gap:8px}
+    .search input{flex:1;padding:10px 12px;border-radius:8px;border:1px solid var(--card-border);background:transparent;color:var(--text)}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .tool-card{padding:18px;border-radius:10px;background:var(--card-bg);border:1px solid var(--card-border);min-height:120px;display:flex;flex-direction:column;justify-content:space-between}
+    .tool-card h4{margin-bottom:8px}
+    .tool-actions{display:flex;gap:8px;align-items:center}
+    .small{font-size:13px;color:var(--muted)}
+
+    .panels{display:flex;gap:18px;margin-top:18px}
+    .logs{flex:1;min-height:160px;padding:14px;border-radius:10px;background:var(--card-bg);border:1px solid var(--card-border);overflow:auto}
+    .activity{width:320px;padding:14px;border-radius:10px;background:var(--card-bg);border:1px solid var(--card-border);min-height:160px}
+
+    @media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}aside.sidebar{display:none}.layout{padding:0 4%}}
+    @media (max-width:640px){.grid{grid-template-columns:1fr}.toolbar{flex-direction:column;align-items:stretch}.panels{flex-direction:column}.activity{width:100%}}
   </style>
 </head>
 <body>
@@ -60,118 +120,363 @@
   <div id="particles" class="particles" aria-hidden="true"></div>
 
   <nav>
-    <h1>SCANORA</h1>
+    <div class="brand">
+      <h1>SCANORA</h1>
+      <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+    </div>
     <ul>
       <li><a href="#capabilities">Capabilities</a></li>
       <li><a href="#features">Features</a></li>
       <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
-  </nav>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>SCANORA - OSINT / CSINT Dashboard</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+          /* Theme variables (dark default) */
+          :root{
+            --accent-cyan:#00ffff;
+            --accent-mag:#ff00ff;
+            --accent-green:#00ff88;
+            --bg-start:#0a0a0f;
+            --bg-mid:#1a0033;
+            --bg-end:#000033;
+            --nav-bg:rgba(10,10,15,0.8);
+            --panel-bg:linear-gradient(135deg, rgba(0,255,255,0.03), rgba(255,0,255,0.02));
+            --text:#e0e0e0;
+            --muted:#cbd5e1;
+            --card-bg:rgba(0,255,255,0.03);
+            --card-border:rgba(0,255,255,0.12);
+            --footer-bg:rgba(10,10,15,0.8);
+          }
 
-  <header class="hero">
-    <h2>Advanced Digital Platform for Intelligence Operations</h2>
-    <p>SCANORA combines operational expertise with state-of-the-art technology to provide secure intelligence, analytics, and automated workflows for mission-critical environments.</p>
-    <a class="btn" href="#contact">Contact Deployment Team</a>
-  </header>
+          /* Light theme overrides */
+          [data-theme="light"]{
+            --accent-cyan:#006b6b;
+            --accent-mag:#b3008a;
+            --accent-green:#007f4f;
+            --bg-start:#ffffff;
+            --bg-mid:#f5f7fa;
+            --bg-end:#e9eef6;
+            --nav-bg:rgba(255,255,255,0.9);
+            --panel-bg:linear-gradient(135deg, rgba(0,0,0,0.02), rgba(0,0,0,0.01));
+            --text:#0b1220;
+            --muted:#334155;
+            --card-bg:rgba(10,20,30,0.03);
+            --card-border:rgba(10,20,30,0.08);
+            --footer-bg:rgba(255,255,255,0.9);
+          }
 
-  <section id="capabilities" class="section">
-    <h2>Core Capabilities</h2>
-    <div class="features">
-      <div class="card">
-        <h3><i class="fas fa-shield-alt"></i> Secure Architecture</h3>
-        <p>Military-grade encryption and security protocols ensure your operations remain protected at all times.</p>
-      </div>
-      <div class="card">
-        <h3><i class="fas fa-eye"></i> Intelligence Gathering</h3>
-        <p>Advanced OSINT capabilities with automated data collection and analysis across multiple sources.</p>
-      </div>
-      <div class="card">
-        <h3><i class="fas fa-network-wired"></i> Network Analysis</h3>
-        <p>Comprehensive network mapping and vulnerability assessment tools for complete situational awareness.</p>
-      </div>
-    </div>
-  </section>
+          *{box-sizing:border-box;margin:0;padding:0}
+          html,body{height:100%;font-family:'Orbitron', 'Courier New', monospace;background:linear-gradient(135deg,var(--bg-start),var(--bg-mid),var(--bg-end));color:var(--text);overflow-x:hidden}
 
-  <section id="features" class="section">
-    <h2>Strategic Features</h2>
-    <div class="features">
-      <div class="card">
-        <h3><i class="fas fa-chart-line"></i> Real-time Analytics</h3>
-        <p>Live data visualization and threat intelligence feeds for immediate decision-making support.</p>
-      </div>
-      <div class="card">
-        <h3><i class="fas fa-users"></i> Team Collaboration</h3>
-        <p>Secure communication channels and shared workspaces for coordinated operations.</p>
-      </div>
-      <div class="card">
-        <h3><i class="fas fa-cogs"></i> Automated Workflows</h3>
-        <p>Customizable automation pipelines that reduce manual work and increase efficiency.</p>
-      </div>
-    </div>
-  </section>
+          /* Background */
+          .bg-animation{position:fixed;inset:0;background:radial-gradient(circle at 20% 80%, rgba(0,255,255,0.06), transparent 40%), radial-gradient(circle at 80% 20%, rgba(255,0,255,0.04), transparent 40%), radial-gradient(circle at 40% 40%, rgba(0,255,136,0.02), transparent 40%);animation:bgPulse 10s ease-in-out infinite;z-index:-3}
+          @keyframes bgPulse{0%,100%{opacity:.6}50%{opacity:1}}
 
-  <section id="about" class="section">
-    <h2>About SCANORA</h2>
-    <p style="max-width:720px;margin:16px auto;color:#cbd5e1">Built by intelligence professionals for intelligence professionals, SCANORA combines decades of operational experience with state-of-the-art technology to deliver unprecedented capabilities in the digital domain.</p>
-  </section>
+          .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.04) 1px, transparent 1px);background-size:50px 50px;animation:gridMove 20s linear infinite;z-index:-2}
+          @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
 
-  <section id="contact" class="section">
-    <h2>Ready to Deploy?</h2>
-    <p style="color:#cbd5e1;margin-bottom:18px">Join the elite community of cyber intelligence professionals using SCANORA for mission-critical operations.</p>
-    <a class="btn" href="#">Contact Deployment Team</a>
-  </section>
+          .particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
+          .particle{position:absolute;width:2px;height:2px;background:var(--accent-cyan);border-radius:50%;box-shadow:0 0 8px var(--accent-cyan);animation:particleFloat linear infinite}
+          @keyframes particleFloat{0%{transform:translateY(100vh);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100vh);opacity:0}}
 
-  <footer>
-    &copy; 2026 SCANORA. All rights reserved. | <span style="color:var(--accent-cyan)">Classified Intelligence Platform</span>
-  </footer>
+          /* Nav */
+          nav{display:flex;justify-content:space-between;align-items:center;padding:16px 6%;background:var(--nav-bg);border-bottom:2px solid var(--accent-cyan);backdrop-filter:blur(8px);position:sticky;top:0;z-index:1000}
+          nav .brand{display:flex;align-items:center;gap:12px}
+          nav h1{color:var(--accent-cyan);font-size:22px;text-shadow:0 0 18px var(--accent-cyan)}
+          nav ul{display:flex;gap:14px;list-style:none}
+          nav a{text-decoration:none;color:inherit;padding:8px 14px;border-radius:20px;border:1px solid transparent;font-weight:600;letter-spacing:1px;transition:all .25s}
+          nav a:hover{color:var(--accent-cyan);border-color:var(--accent-cyan);transform:translateY(-2px);box-shadow:0 0 18px rgba(0,255,255,0.12)}
 
-  <script>
-    // Particle System
-    (function(){
-      function createParticles(){
-        const container = document.getElementById('particles');
-        const count = 50;
-        for(let i=0;i<count;i++){
-          const d = document.createElement('div');
-          d.className='particle';
-          d.style.left = Math.random()*100+'%';
-          d.style.top = Math.random()*100+'%';
-          d.style.animationDuration = (10 + Math.random()*10) + 's';
-          d.style.animationDelay = (Math.random()*10) + 's';
-          container.appendChild(d);
-        }
-      }
+          .theme-toggle{background:transparent;border:1px solid transparent;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:16px}
 
-      // DOM ready
-      document.addEventListener('DOMContentLoaded', function(){
-        createParticles();
+          /* Hero */
+          .hero{max-width:1100px;margin:36px auto;padding:40px 6%;text-align:center;border-radius:12px;border:2px solid var(--accent-cyan);background:var(--panel-bg);position:relative}
+          .hero h2{font-size:32px;background:linear-gradient(45deg,var(--accent-cyan),var(--accent-mag),var(--accent-green));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:12px}
+          .hero p{max-width:720px;margin:0 auto 18px;color:var(--muted)}
 
-        // Smooth scroll for internal links
-        document.querySelectorAll('a[href^="#"]').forEach(a=>{
-          a.addEventListener('click', function(e){
-            const href = this.getAttribute('href');
-            if(href && href.length>1){
-              const target = document.querySelector(href);
-              if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
+          .btn{display:inline-block;padding:10px 18px;border-radius:10px;background:linear-gradient(45deg,var(--accent-cyan),var(--accent-mag),var(--accent-green));color:#081018;font-weight:700;text-transform:uppercase;letter-spacing:1px;text-decoration:none;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(0,255,255,0.12);transition:transform .2s}
+          .btn:hover{transform:translateY(-3px)}
+
+          /* Dashboard styles */
+          .layout{display:flex;gap:20px;max-width:1200px;margin:18px auto;padding:0 6%}
+          aside.sidebar{width:260px;background:var(--card-bg);border-radius:10px;padding:12px;border:1px solid var(--card-border)}
+          aside.sidebar h3{margin-bottom:12px;color:var(--muted);font-size:14px}
+          .tool-list{display:flex;flex-direction:column;gap:8px}
+          .tool-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:transparent;border:1px solid transparent;cursor:pointer}
+          .tool-item:hover{background:rgba(0,0,0,0.03)}
+
+          .main{flex:1}
+          .toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:12px}
+          .search{flex:1;display:flex;gap:8px}
+          .search input{flex:1;padding:10px 12px;border-radius:8px;border:1px solid var(--card-border);background:transparent;color:var(--text)}
+          .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+          .tool-card{padding:16px;border-radius:10px;background:var(--card-bg);border:1px solid var(--card-border);min-height:110px;display:flex;flex-direction:column;justify-content:space-between}
+          .tool-card h4{margin-bottom:8px}
+          .tool-actions{display:flex;gap:8px;align-items:center}
+          .small{font-size:13px;color:var(--muted)}
+
+          .panels{display:flex;gap:18px;margin-top:18px}
+          .logs{flex:1;min-height:160px;padding:12px;border-radius:10px;background:var(--card-bg);border:1px solid var(--card-border);overflow:auto}
+          .activity{width:320px;padding:12px;border-radius:10px;background:var(--card-bg);border:1px solid var(--card-border);min-height:160px}
+
+          .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.6);transform:scale(0);animation:ripple-animation .6s linear;pointer-events:none}
+          @keyframes ripple-animation{to{transform:scale(4);opacity:0}}
+
+          @media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}aside.sidebar{display:none}.layout{padding:0 4%}}
+          @media (max-width:640px){.grid{grid-template-columns:1fr}.toolbar{flex-direction:column;align-items:stretch}.panels{flex-direction:column}.activity{width:100%}}
+        </style>
+      </head>
+      <body>
+        <!-- Background elements -->
+        <div class="bg-animation" aria-hidden="true"></div>
+        <div class="grid-bg" aria-hidden="true"></div>
+        <div id="particles" class="particles" aria-hidden="true"></div>
+
+        <nav>
+          <div class="brand">
+            <h1>SCANORA</h1>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌙</button>
+          </div>
+          <ul>
+            <li><a href="#capabilities">Capabilities</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+
+        <header class="hero">
+          <h2>OSINT / CSINT Tools Dashboard</h2>
+          <p>Centralized dashboard for running and monitoring OSINT and CSINT tools. Connect external APIs later — run tools here and view results and logs.</p>
+        </header>
+
+        <div class="layout">
+          <aside class="sidebar" aria-label="Sidebar">
+            <h3>Tool Categories</h3>
+            <div class="tool-list">
+              <div class="tool-item"><span>Domain & IP</span><button class="small" onclick="runTool('domain-lookup')">Run</button></div>
+              <div class="tool-item"><span>Social Media</span><button class="small" onclick="runTool('social-monitor')">Run</button></div>
+              <div class="tool-item"><span>Network Mapper</span><button class="small" onclick="runTool('net-map')">Run</button></div>
+              <div class="tool-item"><span>Metadata Extractor</span><button class="small" onclick="runTool('meta-extract')">Run</button></div>
+            </div>
+            <hr style="margin:12px 0;border:none;border-top:1px solid var(--card-border)">
+            <h3>API Keys</h3>
+            <p class="small">Add your API endpoints and keys later. Keys are stored locally in your browser for now.</p>
+          </aside>
+
+          <main class="main">
+            <div class="toolbar">
+              <div class="search">
+                <input id="global-search" placeholder="Search domains, IPs, handles..." aria-label="Search">
+                <button class="btn" onclick="quickSearch()">Search</button>
+              </div>
+              <div style="display:flex;gap:8px;align-items:center">
+                <button class="btn" onclick="refreshAll()">Refresh All</button>
+                <button class="btn" onclick="clearLogs()">Clear Logs</button>
+              </div>
+            </div>
+
+            <div class="grid" id="tool-grid">
+              <div class="tool-card" id="card-domain-lookup">
+                <div>
+                  <h4>Domain Lookup</h4>
+                  <p class="small">Resolve WHOIS, DNS records, and basic reputation.</p>
+                </div>
+                <div class="tool-actions">
+                  <button class="btn" data-tool="domain-lookup" onclick="runTool('domain-lookup')">Run</button>
+                  <span class="small" id="status-domain-lookup">Idle</span>
+                </div>
+              </div>
+
+              <div class="tool-card" id="card-ip-lookup">
+                <div>
+                  <h4>IP Lookup</h4>
+                  <p class="small">GeoIP, ASN, and known abuse reports.</p>
+                </div>
+                <div class="tool-actions">
+                  <button class="btn" data-tool="ip-lookup" onclick="runTool('ip-lookup')">Run</button>
+                  <span class="small" id="status-ip-lookup">Idle</span>
+                </div>
+              </div>
+
+              <div class="tool-card" id="card-social-monitor">
+                <div>
+                  <h4>Social Monitor</h4>
+                  <p class="small">Track handles, keywords, and sentiment over time.</p>
+                </div>
+                <div class="tool-actions">
+                  <button class="btn" data-tool="social-monitor" onclick="runTool('social-monitor')">Run</button>
+                  <span class="small" id="status-social-monitor">Idle</span>
+                </div>
+              </div>
+
+              <div class="tool-card" id="card-net-map">
+                <div>
+                  <h4>Network Mapper</h4>
+                  <p class="small">Map network topology and open services (passive).</p>
+                </div>
+                <div class="tool-actions">
+                  <button class="btn" data-tool="net-map" onclick="runTool('net-map')">Run</button>
+                  <span class="small" id="status-net-map">Idle</span>
+                </div>
+              </div>
+
+              <div class="tool-card" id="card-meta-extract">
+                <div>
+                  <h4>Metadata Extractor</h4>
+                  <p class="small">Extract EXIF/metadata from images and documents.</p>
+                </div>
+                <div class="tool-actions">
+                  <button class="btn" data-tool="meta-extract" onclick="runTool('meta-extract')">Run</button>
+                  <span class="small" id="status-meta-extract">Idle</span>
+                </div>
+              </div>
+
+              <div class="tool-card" id="card-custom">
+                <div>
+                  <h4>Custom API Runner</h4>
+                  <p class="small">Use this card to later configure custom endpoints and parameters.</p>
+                </div>
+                <div class="tool-actions">
+                  <button class="btn" onclick="runTool('custom')">Run</button>
+                  <span class="small" id="status-custom">Idle</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="panels">
+              <div class="logs" id="logs" aria-live="polite">
+                <strong>Activity Logs</strong>
+                <div id="log-entries" style="margin-top:8px;"></div>
+              </div>
+
+              <div class="activity">
+                <strong>Recent Activity</strong>
+                <div id="activity-list" style="margin-top:8px;" class="small">
+                  <div>Welcome to SCANORA dashboard — run a tool to begin.</div>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+
+        <footer>
+          &copy; 2026 SCANORA. All rights reserved. | <span style="color:var(--accent-cyan)">OSINT / CSINT Dashboard</span>
+        </footer>
+
+        <script>
+          // Particle System + Theme + Tool runner
+          (function(){
+            function createParticles(){
+              const container = document.getElementById('particles');
+              if(!container) return;
+              const count = 50;
+              for(let i=0;i<count;i++){
+                const d = document.createElement('div');
+                d.className='particle';
+                d.style.left = Math.random()*100+'%';
+                d.style.top = Math.random()*100+'%';
+                d.style.animationDuration = (10 + Math.random()*10) + 's';
+                d.style.animationDelay = (Math.random()*10) + 's';
+                container.appendChild(d);
+              }
             }
-          });
-        });
 
-        // Ripple effect
-        document.querySelectorAll('.btn').forEach(btn=>{
-          btn.addEventListener('click', function(e){
-            const r = document.createElement('span'); r.className='ripple';
-            this.appendChild(r);
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size/2; const y = e.clientY - rect.top - size/2;
-            r.style.width = r.style.height = size+'px'; r.style.left = x+'px'; r.style.top = y+'px';
-            setTimeout(()=>r.remove(),600);
-          });
-        });
-      });
-    })();
-  </script>
-</body>
-</html>
+            function applyTheme(theme){
+              if(theme === 'light') document.documentElement.setAttribute('data-theme','light');
+              else document.documentElement.removeAttribute('data-theme');
+              const btn = document.getElementById('theme-toggle');
+              if(btn) btn.textContent = (theme==='light') ? '☀️' : '🌙';
+            }
+
+            function initTheme(){
+              const saved = localStorage.getItem('site-theme');
+              if(saved) return applyTheme(saved);
+              const prefersLight = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches;
+              applyTheme(prefersLight ? 'light' : 'dark');
+            }
+
+            // UI helpers
+            function addLog(msg){
+              const container = document.getElementById('log-entries');
+              if(!container) return;
+              const el = document.createElement('div');
+              el.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+              container.prepend(el);
+            }
+
+            window.runTool = function(toolId){
+              const statusEl = document.getElementById('status-'+toolId) || document.querySelector('#status-'+toolId);
+              if(statusEl) statusEl.textContent = 'Running...';
+              addLog(`Started ${toolId}`);
+              // Simulate async call to external API (user will add real APIs later)
+              setTimeout(()=>{
+                const fakeResult = { ok:true, data: `Sample results for ${toolId}` };
+                if(statusEl) statusEl.textContent = 'Done';
+                addLog(`Finished ${toolId}: ${fakeResult.data}`);
+                const activity = document.getElementById('activity-list');
+                if(activity) activity.insertAdjacentHTML('afterbegin', `<div class="small">${new Date().toLocaleTimeString()} — ${toolId} returned sample data.</div>`);
+              }, 900 + Math.random()*1100);
+            };
+
+            window.quickSearch = function(){
+              const qEl = document.getElementById('global-search');
+              const q = qEl ? qEl.value.trim() : '';
+              if(!q) return addLog('Search attempted with empty query');
+              addLog(`Quick search: ${q}`);
+              // simulate dispatching search to several tools
+              runTool('domain-lookup'); runTool('ip-lookup');
+            };
+
+            window.refreshAll = function(){
+              addLog('Refreshing all tool cards');
+              document.querySelectorAll('[data-tool]').forEach(b=>{
+                const id = b.getAttribute('data-tool'); if(id) runTool(id);
+              });
+            };
+
+            window.clearLogs = function(){
+              const container = document.getElementById('log-entries'); if(container) container.innerHTML = '';
+              addLog('Logs cleared');
+            };
+
+            // DOM ready
+            document.addEventListener('DOMContentLoaded', function(){
+              createParticles();
+              initTheme();
+
+              // Theme toggle
+              const themeBtn = document.getElementById('theme-toggle');
+              if(themeBtn){
+                themeBtn.addEventListener('click', function(){
+                  const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+                  const next = current === 'light' ? 'dark' : 'light';
+                  applyTheme(next);
+                  localStorage.setItem('site-theme', next);
+                });
+              }
+
+              // Ripple buttons
+              document.querySelectorAll('.btn').forEach(btn=>{
+                btn.addEventListener('click', function(e){
+                  const r = document.createElement('span'); r.className='ripple';
+                  this.appendChild(r);
+                  const rect = this.getBoundingClientRect();
+                  const size = Math.max(rect.width, rect.height);
+                  const x = e.clientX - rect.left - size/2; const y = e.clientY - rect.top - size/2;
+                  r.style.width = r.style.height = size+'px'; r.style.left = x+'px'; r.style.top = y+'px';
+                  setTimeout(()=>r.remove(),600);
+                });
+              });
+            });
+          })();
+        </script>
+
+      </body>
+      </html>
