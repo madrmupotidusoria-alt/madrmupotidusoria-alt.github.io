@@ -48,88 +48,109 @@ function App() {
   };
 
   const renderContent = () => {
-    if (showLogin) {
+    if (showLogin || showRegister) {
       return (
         <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
-          <div className="bg-gray-900 p-8 rounded-xl shadow-2xl max-w-md w-full">
-            <h2 className="text-3xl font-bold mb-6 text-center">Login to SCANORA</h2>
-            <form onSubmit={handleLogin} className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Username"
-                  className="w-full px-4 py-3 bg-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="w-full px-4 py-3 bg-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
+          <div className="bg-black p-8 rounded-2xl shadow-2xl max-w-md w-full border border-gray-800">
+            {/* SCANORA Logo */}
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-blue-400 tracking-wider">SCANORA</h1>
+            </div>
+
+            {/* Tabs */}
+            <div className="flex mb-8 border-b border-gray-700">
               <button
-                type="submit"
-                className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition duration-300"
+                onClick={() => { setShowLogin(true); setShowRegister(false); }}
+                className={`flex-1 pb-3 text-sm font-medium transition-colors ${
+                  showLogin 
+                    ? 'text-blue-400 border-b-2 border-blue-400' 
+                    : 'text-gray-400 hover:text-white'
+                }`}
               >
                 Login
               </button>
-            </form>
-            <button
-              onClick={() => setShowLogin(false)}
-              className="mt-4 w-full py-2 text-gray-400 hover:text-white transition duration-300"
-            >
-              Back
-            </button>
-          </div>
-        </div>
-      );
-    }
-
-    if (showRegister) {
-      return (
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
-          <div className="bg-gray-900 p-8 rounded-xl shadow-2xl max-w-md w-full">
-            <h2 className="text-3xl font-bold mb-6 text-center">Register for SCANORA</h2>
-            <form onSubmit={handleRegister} className="space-y-4">
-              <div>
-                <input
-                  type="text"
-                  placeholder="Username"
-                  className="w-full px-4 py-3 bg-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full px-4 py-3 bg-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
-              <div>
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="w-full px-4 py-3 bg-gray-800 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  required
-                />
-              </div>
               <button
-                type="submit"
-                className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition duration-300"
+                onClick={() => { setShowRegister(true); setShowLogin(false); }}
+                className={`flex-1 pb-3 text-sm font-medium transition-colors ${
+                  showRegister 
+                    ? 'text-blue-400 border-b-2 border-blue-400' 
+                    : 'text-gray-400 hover:text-white'
+                }`}
               >
                 Register
               </button>
-            </form>
+            </div>
+
+            {/* Login Form */}
+            {showLogin && (
+              <form onSubmit={handleLogin} className="space-y-6">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Username"
+                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition duration-300 text-white"
+                >
+                  Login
+                </button>
+              </form>
+            )}
+
+            {/* Register Form */}
+            {showRegister && (
+              <form onSubmit={handleRegister} className="space-y-6">
+                <div>
+                  <input
+                    type="text"
+                    placeholder="Username"
+                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                    required
+                  />
+                </div>
+                <div>
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                    required
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition duration-300 text-white"
+                >
+                  Register
+                </button>
+              </form>
+            )}
+
+            {/* Back Button */}
             <button
-              onClick={() => setShowRegister(false)}
-              className="mt-4 w-full py-2 text-gray-400 hover:text-white transition duration-300"
+              onClick={() => { setShowLogin(false); setShowRegister(false); }}
+              className="mt-6 w-full py-2 text-gray-400 hover:text-white transition duration-300 text-sm"
             >
-              Back
+              ← Back to Home
             </button>
           </div>
         </div>
