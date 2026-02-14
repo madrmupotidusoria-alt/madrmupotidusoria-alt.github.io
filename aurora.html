@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scanora Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
+<title>Aurora Background Effect</title>
 <style>
 
 .aurora-container {
@@ -18,143 +17,32 @@
 
 body {
     margin: 0;
-    font-family: 'Orbitron', sans-serif;
+    padding: 0;
     background: #000000;
-    color: #ffffff;
-    overflow-x: hidden;
-    position: relative;
+    overflow: hidden;
 }
 
-header {
+.demo-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    padding: 80px 20px;
-    position: relative;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
     z-index: 10;
 }
 
-h1 {
-    font-size: 3.5rem;
-    letter-spacing: 4px;
-    font-weight: 600;
+.demo-content h1 {
+    font-size: 2rem;
     margin-bottom: 20px;
-    text-shadow: 0 0 20px rgba(82, 39, 255, 0.3);
+    text-shadow: 0 0 20px rgba(82, 39, 255, 0.5);
 }
 
-.subtitle {
+.demo-content p {
     font-size: 1.2rem;
     opacity: 0.8;
     max-width: 600px;
-    margin: 0 auto 40px;
-    line-height: 1.6;
-}
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 40px 20px;
-    position: relative;
-    z-index: 10;
-}
-
-.tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.card {
-    background: rgba(17, 17, 17, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 40px;
-    border-radius: 8px;
-    transition: 0.3s ease;
-    text-align: center;
-    backdrop-filter: blur(5px);
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 10px 30px rgba(82, 39, 255, 0.2);
-}
-
-.card h3 {
-    font-size: 1.3rem;
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-.card p {
-    opacity: 0.7;
-    margin-bottom: 25px;
-    line-height: 1.5;
-}
-
-.button {
-    display: inline-block;
-    padding: 12px 24px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
-    text-decoration: none;
-    transition: 0.3s ease;
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
-.button:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.6);
-    transform: translateY(-2px);
-}
-
-footer {
-    text-align: center;
-    padding: 60px 20px;
-    opacity: 0.6;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 80px;
-}
-
-.hero-styles {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin: 60px 0;
-}
-
-.style-card {
-    background: rgba(10, 10, 10, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 30px;
-    border-radius: 8px;
-    transition: 0.3s ease;
-}
-
-.style-card:hover {
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.style-card h4 {
-    color: #ffffff;
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-}
-
-.style-card p {
-    opacity: 0.8;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.style-card .tag {
-    display: inline-block;
-    background: rgba(82, 39, 255, 0.2);
-    color: #ffffff;
-    padding: 4px 12px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
 }
 
 </style>
@@ -163,83 +51,10 @@ footer {
 
 <div class="aurora-container" id="aurora"></div>
 
-<header>
-    <h1>SCANORA INTELLIGENCE</h1>
-    <p class="subtitle">Digital Footprint Intelligence — Unified. Correlate breach data, social identities, and infrastructure signals in one powerful dashboard.</p>
-</header>
-
-<div class="container">
-    
-    <div class="hero-styles">
-        <div class="style-card">
-            <h4>🔎 Clean & Professional</h4>
-            <p>Digital Footprint Intelligence — Unified. Correlate breach data, social identities, and infrastructure signals in one powerful dashboard.</p>
-            <span class="tag">Professional</span>
-        </div>
-
-        <div class="style-card">
-            <h4>🚀 Bold & Modern</h4>
-            <p>Digital Clarity in a Noisy World. Uncover, connect, and investigate every digital trace from a single command center.</p>
-            <span class="tag">Modern</span>
-        </div>
-
-        <div class="style-card">
-            <h4>🧠 Analytical</h4>
-            <p>Comprehensive Digital Correlation. Turn scattered digital artifacts into actionable intelligence — instantly.</p>
-            <span class="tag">Analytical</span>
-        </div>
-
-        <div class="style-card">
-            <h4>⚡ Short & Punchy</h4>
-            <p>Digital signals. Connected. One dashboard. Complete visibility.</p>
-            <span class="tag">Concise</span>
-        </div>
-    </div>
-
-    <div class="tools-grid">
-
-        <div class="card">
-            <h3>Username Recon</h3>
-            <p>Scan 500+ platforms for digital footprints and social media presence across the internet.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>Email Investigation</h3>
-            <p>Analyze breach data, exposure history, and compromised credentials from major data leaks.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>IP Intelligence</h3>
-            <p>Geolocation, network mapping, and infrastructure analysis for comprehensive IP investigation.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>Metadata Extractor</h3>
-            <p>Reveal hidden data, EXIF information, and embedded metadata in images and documents.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>Dark Web Monitor</h3>
-            <p>Surface hidden services, intelligence leaks, and underground marketplace activities.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>Social Graph Mapping</h3>
-            <p>Visualize digital relationships, connection patterns, and social network clusters.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-    </div>
+<div class="demo-content">
+    <h1>Aurora Background Effect</h1>
+    <p>WebGL-powered northern lights animation with dynamic color gradients</p>
 </div>
-
-<footer>
-    © 2026 Scanora Intelligence | Ethical OSINT Framework | Professional Digital Investigation Platform
-</footer>
 
 <script>
 // Aurora Background Effect
