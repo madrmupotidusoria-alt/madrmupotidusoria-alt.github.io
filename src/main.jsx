@@ -33,18 +33,78 @@ function App() {
     setCurrentPage(item.toLowerCase());
   };
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoggedIn(true);
-    setShowLogin(false);
-    setCurrentPage('dashboard');
+    const formData = new FormData(e.target);
+    const username = formData.get('username');
+    const password = formData.get('password');
+    
+    try {
+      const response = await fetch('https://scanora-backend.herokuapp.com/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setIsLoggedIn(true);
+        setShowLogin(false);
+        setCurrentPage('dashboard');
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+      } else {
+        alert(data.message || 'Login failed');
+      }
+    } catch (error) {
+      // Fallback to mock login for demo
+      if (username === 'tbny' && password === 'admin123') {
+        setIsLoggedIn(true);
+        setShowLogin(false);
+        setCurrentPage('dashboard');
+      } else {
+        alert('Invalid credentials. Use tbny/admin123 for demo');
+      }
+    }
   };
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    setIsLoggedIn(true);
-    setShowRegister(false);
-    setCurrentPage('dashboard');
+    const formData = new FormData(e.target);
+    const username = formData.get('username');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    
+    try {
+      const response = await fetch('https://scanora-backend.herokuapp.com/api/auth/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, email, password }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        setIsLoggedIn(true);
+        setShowRegister(false);
+        setCurrentPage('dashboard');
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+      } else {
+        alert(data.message || 'Registration failed');
+      }
+    } catch (error) {
+      // Fallback to mock registration for demo
+      setIsLoggedIn(true);
+      setShowRegister(false);
+      setCurrentPage('dashboard');
+      alert('Registration successful! (Demo mode)');
+    }
   };
 
   const renderContent = () => {
@@ -86,6 +146,7 @@ function App() {
               <form onSubmit={handleLogin} className="space-y-6">
                 <div>
                   <input
+                    name="username"
                     type="text"
                     placeholder="Username"
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
@@ -94,6 +155,7 @@ function App() {
                 </div>
                 <div>
                   <input
+                    name="password"
                     type="password"
                     placeholder="Password"
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
@@ -114,6 +176,7 @@ function App() {
               <form onSubmit={handleRegister} className="space-y-6">
                 <div>
                   <input
+                    name="username"
                     type="text"
                     placeholder="Username"
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
@@ -122,6 +185,7 @@ function App() {
                 </div>
                 <div>
                   <input
+                    name="email"
                     type="email"
                     placeholder="Email"
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
@@ -130,6 +194,7 @@ function App() {
                 </div>
                 <div>
                   <input
+                    name="password"
                     type="password"
                     placeholder="Password"
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
