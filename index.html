@@ -1,475 +1,307 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scanora Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-<style>
-
-.aurora-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-}
-
-body {
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    background: #000000;
-    color: #ffffff;
-    overflow-x: hidden;
-    position: relative;
-}
-
-header {
-    text-align: center;
-    padding: 80px 20px;
-    position: relative;
-    z-index: 10;
-}
-
-h1 {
-    font-size: 3.5rem;
-    letter-spacing: 4px;
-    font-weight: 600;
-    margin-bottom: 20px;
-    text-shadow: 0 0 20px rgba(82, 39, 255, 0.3);
-}
-
-.subtitle {
-    font-size: 1.2rem;
-    opacity: 0.8;
-    max-width: 600px;
-    margin: 0 auto 40px;
-    line-height: 1.6;
-}
-
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 40px 20px;
-    position: relative;
-    z-index: 10;
-}
-
-.tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.card {
-    background: rgba(17, 17, 17, 0.9);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 40px;
-    border-radius: 8px;
-    transition: 0.3s ease;
-    text-align: center;
-    backdrop-filter: blur(5px);
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255, 255, 255, 0.5);
-    box-shadow: 0 10px 30px rgba(82, 39, 255, 0.2);
-}
-
-.card h3 {
-    font-size: 1.3rem;
-    margin-top: 0;
-    margin-bottom: 15px;
-    font-weight: 600;
-}
-
-.card p {
-    opacity: 0.7;
-    margin-bottom: 25px;
-    line-height: 1.5;
-}
-
-.button {
-    display: inline-block;
-    padding: 12px 24px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
-    text-decoration: none;
-    transition: 0.3s ease;
-    font-weight: 600;
-    letter-spacing: 1px;
-}
-
-.button:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.6);
-    transform: translateY(-2px);
-}
-
-footer {
-    text-align: center;
-    padding: 60px 20px;
-    opacity: 0.6;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    margin-top: 80px;
-}
-
-.hero-styles {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin: 60px 0;
-}
-
-.style-card {
-    background: rgba(10, 10, 10, 0.8);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 30px;
-    border-radius: 8px;
-    transition: 0.3s ease;
-}
-
-.style-card:hover {
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.style-card h4 {
-    color: #ffffff;
-    margin-bottom: 15px;
-    font-size: 1.1rem;
-}
-
-.style-card p {
-    opacity: 0.8;
-    line-height: 1.6;
-    margin-bottom: 20px;
-}
-
-.style-card .tag {
-    display: inline-block;
-    background: rgba(82, 39, 255, 0.2);
-    color: #ffffff;
-    padding: 4px 12px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-
-</style>
-</head>
-<body>
-
-<div class="aurora-container" id="aurora"></div>
-
-<header>
-    <h1>SCANORA INTELLIGENCE</h1>
-    <p class="subtitle">Digital Footprint Intelligence — Unified. Correlate breach data, social identities, and infrastructure signals in one powerful dashboard.</p>
-</header>
-
-<div class="container">
-    
-    <div class="hero-styles">
-        <div class="style-card">
-            <h4>🔎 Clean & Professional</h4>
-            <p>Digital Footprint Intelligence — Unified. Correlate breach data, social identities, and infrastructure signals in one powerful dashboard.</p>
-            <span class="tag">Professional</span>
-        </div>
-
-        <div class="style-card">
-            <h4>🚀 Bold & Modern</h4>
-            <p>Digital Clarity in a Noisy World. Uncover, connect, and investigate every digital trace from a single command center.</p>
-            <span class="tag">Modern</span>
-        </div>
-
-        <div class="style-card">
-            <h4>🧠 Analytical</h4>
-            <p>Comprehensive Digital Correlation. Turn scattered digital artifacts into actionable intelligence — instantly.</p>
-            <span class="tag">Analytical</span>
-        </div>
-
-        <div class="style-card">
-            <h4>⚡ Short & Punchy</h4>
-            <p>Digital signals. Connected. One dashboard. Complete visibility.</p>
-            <span class="tag">Concise</span>
-        </div>
-    </div>
-
-    <div class="tools-grid">
-
-        <div class="card">
-            <h3>Username Recon</h3>
-            <p>Scan 500+ platforms for digital footprints and social media presence across the internet.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>Email Investigation</h3>
-            <p>Analyze breach data, exposure history, and compromised credentials from major data leaks.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>IP Intelligence</h3>
-            <p>Geolocation, network mapping, and infrastructure analysis for comprehensive IP investigation.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>Metadata Extractor</h3>
-            <p>Reveal hidden data, EXIF information, and embedded metadata in images and documents.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>Dark Web Monitor</h3>
-            <p>Surface hidden services, intelligence leaks, and underground marketplace activities.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-        <div class="card">
-            <h3>Social Graph Mapping</h3>
-            <p>Visualize digital relationships, connection patterns, and social network clusters.</p>
-            <a href="#" class="button">Launch Tool</a>
-        </div>
-
-    </div>
-</div>
-
-<footer>
-    © 2026 Scanora Intelligence | Ethical OSINT Framework | Professional Digital Investigation Platform
-</footer>
-
-<script>
-// Aurora Background Effect
-const VERT = `#version 300 es
-in vec2 position;
-void main() {
-  gl_Position = vec4(position, 0.0, 1.0);
-}
-`;
-
-const FRAG = `#version 300 es
-precision highp float;
-
-uniform float uTime;
-uniform float uAmplitude;
-uniform vec3 uColorStops[3];
-uniform vec2 uResolution;
-uniform float uBlend;
-
-out vec4 fragColor;
-
-vec3 permute(vec3 x) {
-  return mod(((x * 34.0) + 1.0) * x, 289.0);
-}
-
-float snoise(vec2 v){
-  const vec4 C = vec4(
-      0.211324865405187, 0.366025403784439,
-      -0.577350269189626, 0.02439024390244
-  );
-  vec2 i  = floor(v + dot(v, C.yy));
-  vec2 x0 = v - i + dot(i, C.xx);
-  vec2 i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
-  vec4 x12 = x0.xyxy + C.xxzz;
-  x12.xy -= i1;
-  i = mod(i, 289.0);
-
-  vec3 p = permute(
-      permute(i.y + vec3(0.0, i1.y, 1.0))
-    + i.x + vec3(0.0, i1.x, 1.0)
-  );
-
-  vec3 m = max(
-      0.5 - vec3(
-          dot(x0, x0),
-          dot(x12.xy, x12.xy),
-          dot(x12.zw, x12.zw)
-      ), 
-      0.0
-  );
-  m = m * m;
-  m = m * m;
-
-  vec3 x = 2.0 * fract(p * C.www) - 1.0;
-  vec3 h = abs(x) - 0.5;
-  vec3 ox = floor(x + 0.5);
-  vec3 a0 = x - ox;
-  m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);
-
-  vec3 g;
-  g.x  = a0.x  * x0.x  + h.x  * x0.y;
-  g.yz = a0.yz * x12.xz + h.yz * x12.yw;
-  return 130.0 * dot(m, g);
-}
-
-struct ColorStop {
-  vec3 color;
-  float position;
-};
-
-#define COLOR_RAMP(colors, factor, finalColor) {              \
-  int index = 0;                                            \
-  for (int i = 0; i < 2; i++) {                               \
-     ColorStop currentColor = colors[i];                    \
-     bool isInBetween = currentColor.position <= factor;    \
-     index = int(mix(float(index), float(i), float(isInBetween))); \
-  }                                                         \
-  ColorStop currentColor = colors[index];                   \
-  ColorStop nextColor = colors[index + 1];                  \
-  float range = nextColor.position - currentColor.position; \
-  float lerpFactor = (factor - currentColor.position) / range; \
-  finalColor = mix(currentColor.color, nextColor.color, lerpFactor); \
-}
-
-void main() {
-  vec2 uv = gl_FragCoord.xy / uResolution;  
-  ColorStop colors[3];
-  colors[0] = ColorStop(uColorStops[0], 0.0);
-  colors[1] = ColorStop(uColorStops[1], 0.5);
-  colors[2] = ColorStop(uColorStops[2], 1.0);
-  
-  vec3 rampColor;
-  COLOR_RAMP(colors, uv.x, rampColor);  
-  
-  float height = snoise(vec2(uv.x * 2.0 + uTime * 0.1, uTime * 0.25)) * 0.5 * uAmplitude;
-  height = exp(height);
-  height = (uv.y * 2.0 - height + 0.2);
-  float intensity = 0.6 * height;  
-  float midPoint = 0.20;
-  float auroraAlpha = smoothstep(midPoint - uBlend * 0.5, midPoint + uBlend * 0.5, intensity);
-  
-  vec3 auroraColor = intensity * rampColor;  
-  
-  fragColor = vec4(auroraColor * auroraAlpha, auroraAlpha);
-}
-`;
-
-function hexToRgb(hex) {
-    const result = /^#?([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(hex);
-    return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-    } : null;
-}
-
-function createAurora() {
-    const canvas = document.createElement('canvas');
-    const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-    
-    if (!gl) {
-        console.log('WebGL not supported');
-        return;
-    }
-
-    const vertexShader = gl.createShader(gl.VERTEX_SHADER);
-    gl.shaderSource(vertexShader, VERT);
-    gl.compileShader(vertexShader);
-
-    const fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
-    gl.shaderSource(fragmentShader, FRAG);
-    gl.compileShader(fragmentShader);
-
-    const program = gl.createProgram();
-    gl.attachShader(program, vertexShader);
-    gl.attachShader(program, fragmentShader);
-    gl.linkProgram(program);
-
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-        console.error('Unable to initialize the shader program');
-        return;
-    }
-
-    gl.useProgram(program);
-
-    // Set up vertices for a full-screen quad
-    const vertices = new Float32Array([
-        -1, -1,
-         1, -1,
-        -1,  1,
-         1,  1,
-    ]);
-
-    const buffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-
-    const positionLocation = gl.getAttribLocation(program, 'position');
-    gl.enableVertexAttribArray(positionLocation);
-    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
-
-    // Set uniforms
-    const timeLocation = gl.getUniformLocation(program, 'uTime');
-    const amplitudeLocation = gl.getUniformLocation(program, 'uAmplitude');
-    const colorStopsLocation = gl.getUniformLocation(program, 'uColorStops');
-    const resolutionLocation = gl.getUniformLocation(program, 'uResolution');
-    const blendLocation = gl.getUniformLocation(program, 'uBlend');
-
-    const colorStops = ['#5227FF', '#7cff67', '#5227FF'];
-    const colorStopsArray = [];
-    
-    colorStops.forEach(hex => {
-        const rgb = hexToRgb(hex);
-        if (rgb) {
-            colorStopsArray.push(rgb.r / 255, rgb.g / 255, rgb.b / 255);
-        }
-    });
-
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        gl.viewport(0, 0, canvas.width, canvas.height);
-    }
-
-    function render(time) {
-        gl.clearColor(0, 0, 0, 0);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-
-        gl.uniform1f(timeLocation, time * 0.001);
-        gl.uniform1f(amplitudeLocation, 1.0);
-        gl.uniform3fv(colorStopsLocation, colorStopsArray);
-        gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
-        gl.uniform1f(blendLocation, 0.5);
-
-        gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-    }
-
-    let startTime = Date.now();
-    
-    function animate() {
-        const currentTime = Date.now();
-        const elapsed = currentTime - startTime;
-        render(elapsed);
-        requestAnimationFrame(animate);
-    }
-
-    resize();
-    animate();
-
-    window.addEventListener('resize', resize);
-
-    return canvas;
-}
-
-// Initialize aurora background
-document.addEventListener('DOMContentLoaded', function() {
-    const auroraContainer = document.getElementById('aurora');
-    if (auroraContainer) {
-        const auroraCanvas = createAurora();
-        if (auroraCanvas) {
-            auroraCanvas.style.position = 'absolute';
-            auroraCanvas.style.top = '0';
-            auroraCanvas.style.left = '0';
-            auroraCanvas.style.width = '100%';
-            auroraCanvas.style.height = '100%';
-            auroraContainer.appendChild(auroraCanvas);
-        }
-    }
-});
-</script>
-
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>SCANORA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+      /* small helpers to mimic the original glow */
+      .glow {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 9999px;
+        filter: blur(48px);
+        background: rgba(59,130,246,0.18);
+        left: calc(50% - 300px);
+        top: 8rem;
+        transform: translate3d(0,0,0);
+        animation: float 15s ease-in-out infinite;
+        z-index: 0;
+      }
+      @keyframes float {
+        0% { transform: translate(0, 0); }
+        33% { transform: translate(100px, -50px); }
+        66% { transform: translate(-100px, 50px); }
+        100% { transform: translate(0, 0); }
+      }
+      body { 
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+        margin: 0;
+        padding: 0;
+      }
+      #root {
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" data-presets="env,react,es2015">
+      import React, { useState, useEffect } from "react";
+      import { createRoot } from "react-dom/client";
+
+      function App() {
+        const [isLoggedIn, setIsLoggedIn] = useState(false);
+        const [currentPage, setCurrentPage] = useState('home');
+        const [showLogin, setShowLogin] = useState(false);
+        const [showRegister, setShowRegister] = useState(false);
+
+        const handleNavClick = (item) => {
+          if (item === 'Discord') {
+            window.open('https://discord.gg/xtce', '_blank');
+            return;
+          }
+
+          if (item === 'Dashboard' && !isLoggedIn) {
+            setShowLogin(true);
+            return;
+          }
+
+          if (item === 'Login') {
+            setShowLogin(true);
+            setShowRegister(false);
+            return;
+          }
+
+          if (item === 'Register') {
+            setShowRegister(true);
+            setShowLogin(false);
+            return;
+          }
+
+          if (item === 'Pricing') {
+            window.location.href = '/pricing.html';
+            return;
+          }
+
+          setCurrentPage(item.toLowerCase());
+        };
+
+        const handleLogin = (e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const username = formData.get('username');
+          const password = formData.get('password');
+          
+          // Demo login
+          if (username === 'tbny' && password === 'admin123') {
+            setIsLoggedIn(true);
+            setShowLogin(false);
+            setCurrentPage('dashboard');
+            alert('Login successful!');
+          } else {
+            alert('Invalid credentials. Use tbny/admin123 for demo');
+          }
+        };
+
+        const handleRegister = (e) => {
+          e.preventDefault();
+          const formData = new FormData(e.target);
+          const username = formData.get('username');
+          const email = formData.get('email');
+          const password = formData.get('password');
+          
+          // Demo registration
+          setIsLoggedIn(true);
+          setShowRegister(false);
+          setCurrentPage('dashboard');
+          alert('Registration successful!');
+        };
+
+        const handleLogout = () => {
+          setIsLoggedIn(false);
+          setCurrentPage('home');
+        };
+
+        const renderContent = () => {
+          if (showLogin || showRegister) {
+            return (
+              <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
+                <div className="bg-black p-8 rounded-2xl shadow-2xl max-w-md w-full border border-gray-800">
+                  <div className="text-center mb-8">
+                    <h1 className="text-3xl font-bold text-blue-400 tracking-wider">SCANORA</h1>
+                  </div>
+
+                  <div className="flex mb-8 border-b border-gray-700">
+                    <button
+                      onClick={() => { setShowLogin(true); setShowRegister(false); }}
+                      className={`flex-1 pb-3 text-sm font-medium transition-colors ${
+                        showLogin 
+                          ? 'text-blue-400 border-b-2 border-blue-400' 
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      Login
+                    </button>
+                    <button
+                      onClick={() => { setShowRegister(true); setShowLogin(false); }}
+                      className={`flex-1 pb-3 text-sm font-medium transition-colors ${
+                        showRegister 
+                          ? 'text-blue-400 border-b-2 border-blue-400' 
+                          : 'text-gray-400 hover:text-white'
+                      }`}
+                    >
+                      Register
+                    </button>
+                  </div>
+
+                  {showLogin && (
+                    <form onSubmit={handleLogin} className="space-y-6">
+                      <div>
+                        <input
+                          name="username"
+                          type="text"
+                          placeholder="Username"
+                          className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <input
+                          name="password"
+                          type="password"
+                          placeholder="Password"
+                          className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition duration-300 text-white"
+                      >
+                        Login
+                      </button>
+                    </form>
+                  )}
+
+                  {showRegister && (
+                    <form onSubmit={handleRegister} className="space-y-6">
+                      <div>
+                        <input
+                          name="username"
+                          type="text"
+                          placeholder="Username"
+                          className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <input
+                          name="email"
+                          type="email"
+                          placeholder="Email"
+                          className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <input
+                          name="password"
+                          type="password"
+                          placeholder="Password"
+                          className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition duration-300 text-white"
+                      >
+                        Register
+                      </button>
+                    </form>
+                  )}
+
+                  <button
+                    onClick={() => { setShowLogin(false); setShowRegister(false); }}
+                    className="mt-6 w-full py-2 text-gray-400 hover:text-white transition duration-300 text-sm"
+                  >
+                    ← Back to Home
+                  </button>
+                </div>
+              </div>
+            );
+          }
+
+          if (currentPage === 'dashboard' && isLoggedIn) {
+            return (
+              <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
+                <h2 className="text-4xl font-bold mb-8">SCANORA Dashboard</h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl w-full">
+                  <div className="bg-gray-900 p-6 rounded-xl hover:bg-gray-800 transition duration-300">
+                    <h3 className="text-xl font-semibold mb-2">Username Recon</h3>
+                    <p className="text-gray-400">Search 500+ platforms</p>
+                  </div>
+                  <div className="bg-gray-900 p-6 rounded-xl hover:bg-gray-800 transition duration-300">
+                    <h3 className="text-xl font-semibold mb-2">Email Analysis</h3>
+                    <p className="text-gray-400">Breach data investigation</p>
+                  </div>
+                  <div className="bg-gray-900 p-6 rounded-xl hover:bg-gray-800 transition duration-300">
+                    <h3 className="text-xl font-semibold mb-2">IP Intelligence</h3>
+                    <p className="text-gray-400">Network mapping tools</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleLogout}
+                  className="mt-8 px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition duration-300"
+                >
+                  Logout
+                </button>
+              </div>
+            );
+          }
+
+          return (
+            <div className="min-h-screen bg-black text-white relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-b from-blue-900/40 via-black to-black"></div>
+              <div className="glow"></div>
+
+              <nav className="relative z-10 flex justify-between items-center px-10 py-6">
+                <h1 className="text-2xl font-bold tracking-widest">SCANORA</h1>
+
+                <div className="flex gap-8 text-sm text-gray-300">
+                  {["Dashboard", "Register", "Login", "Roster", "Features", "Pricing", "About", "Discord"].map((item, i) => (
+                    <button
+                      key={i}
+                      onClick={() => handleNavClick(item)}
+                      className="hover:text-white transition duration-300 cursor-pointer"
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </div>
+              </nav>
+
+              <div className="relative z-10 flex flex-col items-center justify-center text-center mt-32 px-6">
+                <h2 className="text-5xl md:text-6xl font-bold max-w-4xl leading-tight">
+                  Advanced Digital Intelligence Platform
+                </h2>
+                <p className="mt-6 text-gray-400 max-w-2xl text-lg">
+                  SCANORA represents the next generation of cyber intelligence tools,
+                  combining cutting-edge technology with intuitive design for maximum
+                  operational effectiveness.
+                </p>
+                <button 
+                  onClick={() => setShowRegister(true)}
+                  className="mt-10 px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl shadow-lg shadow-blue-500/30 transition duration-300 hover:scale-105"
+                >
+                  Get Started
+                </button>
+              </div>
+            </div>
+          );
+        };
+
+        return renderContent();
+      }
+
+      const root = createRoot(document.getElementById("root"));
+      root.render(<App />);
+    </script>
+  </body>
 </html>
