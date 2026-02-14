@@ -1,150 +1,177 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Scanora Intelligence</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600&display=swap" rel="stylesheet">
-<style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCANORA - Advanced Digital Platform</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--accent-cyan:#00ffff;--accent-mag:#ff00ff;--accent-green:#00ff88;--bg1:#0a0a0f}
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:'Orbitron', 'Courier New', monospace;background:linear-gradient(135deg,var(--bg1),#1a0033,#000033);color:#e0e0e0;overflow-x:hidden}
 
-body {
-    margin: 0;
-    font-family: 'Orbitron', sans-serif;
-    background: radial-gradient(circle at top, #0a0f1c, #05080f);
-    color: #00f0ff;
-    overflow-x: hidden;
-}
+    /* Background */
+    .bg-animation{position:fixed;inset:0;background:radial-gradient(circle at 20% 80%, rgba(0,255,255,0.08), transparent 40%), radial-gradient(circle at 80% 20%, rgba(255,0,255,0.06), transparent 40%), radial-gradient(circle at 40% 40%, rgba(0,255,136,0.03), transparent 40%);animation:bgPulse 10s ease-in-out infinite;z-index:-3}
+    @keyframes bgPulse{0%,100%{opacity:.6}50%{opacity:1}}
 
-header {
-    text-align: center;
-    padding: 60px 20px;
-}
+    .grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(0,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,255,0.06) 1px, transparent 1px);background-size:50px 50px;animation:gridMove 20s linear infinite;z-index:-2}
+    @keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
 
-h1 {
-    font-size: 3rem;
-    letter-spacing: 3px;
-    text-shadow: 0 0 15px #00f0ff;
-}
+    .particles{position:fixed;inset:0;z-index:-1;pointer-events:none}
+    .particle{position:absolute;width:2px;height:2px;background:var(--accent-cyan);border-radius:50%;box-shadow:0 0 8px var(--accent-cyan);animation:particleFloat linear infinite}
+    @keyframes particleFloat{0%{transform:translateY(100vh);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-100vh);opacity:0}}
 
-.subtitle {
-    opacity: 0.7;
-    margin-top: 10px;
-}
+    /* Nav */
+    nav{display:flex;justify-content:space-between;align-items:center;padding:16px 6%;background:rgba(10,10,15,0.8);border-bottom:2px solid var(--accent-cyan);backdrop-filter:blur(8px);position:sticky;top:0;z-index:1000}
+    nav h1{color:var(--accent-cyan);font-size:22px;text-shadow:0 0 18px var(--accent-cyan)}
+    nav ul{display:flex;gap:14px;list-style:none}
+    nav a{text-decoration:none;color:inherit;padding:8px 14px;border-radius:20px;border:1px solid transparent;font-weight:600;letter-spacing:1px;transition:all .25s}
+    nav a:hover{color:var(--accent-cyan);border-color:var(--accent-cyan);transform:translateY(-2px);box-shadow:0 0 18px rgba(0,255,255,0.15)}
 
-.container {
-    max-width: 1200px;
-    margin: auto;
-    padding: 40px 20px;
-}
+    /* Hero */
+    .hero{max-width:1100px;margin:36px auto;padding:80px 6%;text-align:center;border-radius:18px;border:2px solid var(--accent-cyan);background:linear-gradient(135deg, rgba(0,255,255,0.03), rgba(255,0,255,0.02));position:relative}
+    .hero h2{font-size:42px;background:linear-gradient(45deg,var(--accent-cyan),var(--accent-mag),var(--accent-green));-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:18px}
+    .hero p{max-width:720px;margin:0 auto 26px;color:#cbd5e1}
+    .btn{display:inline-block;padding:14px 26px;border-radius:14px;background:linear-gradient(45deg,var(--accent-cyan),var(--accent-mag),var(--accent-green));color:#081018;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;text-decoration:none;position:relative;overflow:hidden;box-shadow:0 10px 30px rgba(0,255,255,0.18);transition:transform .25s}
+    .btn:hover{transform:translateY(-4px)}
 
-.tools-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
-}
+    /* Cards */
+    .section{padding:64px 6%;text-align:center}
+    .features{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+    .card{min-width:260px;max-width:320px;background:rgba(0,255,255,0.03);border:2px solid rgba(0,255,255,0.12);padding:22px;border-radius:12px;transition:transform .25s,box-shadow .25s}
+    .card h3{color:var(--accent-cyan);margin-bottom:12px}
+    .card p{color:#cbd5e1;line-height:1.6}
+    .card:hover{transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,255,255,0.08);background:rgba(255,0,255,0.04);border-color:var(--accent-mag)}
 
-.card {
-    background: rgba(0, 255, 255, 0.05);
-    border: 1px solid #00f0ff33;
-    padding: 30px;
-    border-radius: 12px;
-    transition: 0.3s ease;
-    backdrop-filter: blur(10px);
-}
+    footer{padding:28px 6%;text-align:center;border-top:2px solid var(--accent-cyan);background:rgba(10,10,15,0.8);margin-top:40px}
 
-.card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 0 25px #00f0ff55;
-}
+    /* ripple */
+    .ripple{position:absolute;border-radius:50%;background:rgba(255,255,255,0.6);transform:scale(0);animation:ripple-animation .6s linear;pointer-events:none}
+    @keyframes ripple-animation{to{transform:scale(4);opacity:0}}
 
-.card h3 {
-    margin-top: 0;
-}
-
-.button {
-    margin-top: 15px;
-    display: inline-block;
-    padding: 10px 20px;
-    border: 1px solid #00f0ff;
-    color: #00f0ff;
-    text-decoration: none;
-    transition: 0.3s ease;
-}
-
-.button:hover {
-    background: #00f0ff;
-    color: #05080f;
-}
-
-footer {
-    text-align: center;
-    padding: 40px;
-    opacity: 0.5;
-}
-
-.glow {
-    animation: pulse 2s infinite alternate;
-}
-
-@keyframes pulse {
-    from { text-shadow: 0 0 10px #00f0ff; }
-    to { text-shadow: 0 0 25px #00f0ff; }
-}
-
-</style>
+    @media (max-width:768px){.hero h2{font-size:28px}.hero{padding:48px 6%;margin:20px}.features{flex-direction:column;align-items:center}.nav ul{flex-wrap:wrap}}
+  </style>
 </head>
 <body>
+  <!-- Background elements -->
+  <div class="bg-animation" aria-hidden="true"></div>
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div id="particles" class="particles" aria-hidden="true"></div>
 
-<header>
-    <h1 class="glow">SCANORA INTELLIGENCE</h1>
-    <p class="subtitle">Advanced Open Source Intelligence Platform</p>
-</header>
+  <nav>
+    <h1>SCANORA</h1>
+    <ul>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#features">Features</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
 
-<div class="container">
-    <div class="tools-grid">
+  <header class="hero">
+    <h2>Advanced Digital Platform for Intelligence Operations</h2>
+    <p>SCANORA combines operational expertise with state-of-the-art technology to provide secure intelligence, analytics, and automated workflows for mission-critical environments.</p>
+    <a class="btn" href="#contact">Contact Deployment Team</a>
+  </header>
 
-        <div class="card">
-            <h3>Username Recon</h3>
-            <p>Scan 500+ platforms for digital footprints.</p>
-            <a href="#" class="button">Launch</a>
-        </div>
-
-        <div class="card">
-            <h3>Email Investigation</h3>
-            <p>Analyze breach data & exposure history.</p>
-            <a href="#" class="button">Launch</a>
-        </div>
-
-        <div class="card">
-            <h3>IP Intelligence</h3>
-            <p>Geolocation & network mapping tools.</p>
-            <a href="#" class="button">Launch</a>
-        </div>
-
-        <div class="card">
-            <h3>Metadata Extractor</h3>
-            <p>Reveal hidden data in images & files.</p>
-            <a href="#" class="button">Launch</a>
-        </div>
-
-        <div class="card">
-            <h3>Dark Web Monitor</h3>
-            <p>Surface hidden services & intelligence leaks.</p>
-            <a href="#" class="button">Launch</a>
-        </div>
-
-        <div class="card">
-            <h3>Social Graph Mapping</h3>
-            <p>Visualize digital relationships & clusters.</p>
-            <a href="#" class="button">Launch</a>
-        </div>
-
+  <section id="capabilities" class="section">
+    <h2>Core Capabilities</h2>
+    <div class="features">
+      <div class="card">
+        <h3><i class="fas fa-shield-alt"></i> Secure Architecture</h3>
+        <p>Military-grade encryption and security protocols ensure your operations remain protected at all times.</p>
+      </div>
+      <div class="card">
+        <h3><i class="fas fa-eye"></i> Intelligence Gathering</h3>
+        <p>Advanced OSINT capabilities with automated data collection and analysis across multiple sources.</p>
+      </div>
+      <div class="card">
+        <h3><i class="fas fa-network-wired"></i> Network Analysis</h3>
+        <p>Comprehensive network mapping and vulnerability assessment tools for complete situational awareness.</p>
+      </div>
     </div>
-</div>
+  </section>
 
-<footer>
-    © 2026 Scanora Intelligence | Ethical OSINT Framework
-</footer>
+  <section id="features" class="section">
+    <h2>Strategic Features</h2>
+    <div class="features">
+      <div class="card">
+        <h3><i class="fas fa-chart-line"></i> Real-time Analytics</h3>
+        <p>Live data visualization and threat intelligence feeds for immediate decision-making support.</p>
+      </div>
+      <div class="card">
+        <h3><i class="fas fa-users"></i> Team Collaboration</h3>
+        <p>Secure communication channels and shared workspaces for coordinated operations.</p>
+      </div>
+      <div class="card">
+        <h3><i class="fas fa-cogs"></i> Automated Workflows</h3>
+        <p>Customizable automation pipelines that reduce manual work and increase efficiency.</p>
+      </div>
+    </div>
+  </section>
 
+  <section id="about" class="section">
+    <h2>About SCANORA</h2>
+    <p style="max-width:720px;margin:16px auto;color:#cbd5e1">Built by intelligence professionals for intelligence professionals, SCANORA combines decades of operational experience with state-of-the-art technology to deliver unprecedented capabilities in the digital domain.</p>
+  </section>
+
+  <section id="contact" class="section">
+    <h2>Ready to Deploy?</h2>
+    <p style="color:#cbd5e1;margin-bottom:18px">Join the elite community of cyber intelligence professionals using SCANORA for mission-critical operations.</p>
+    <a class="btn" href="#">Contact Deployment Team</a>
+  </section>
+
+  <footer>
+    &copy; 2026 SCANORA. All rights reserved. | <span style="color:var(--accent-cyan)">Classified Intelligence Platform</span>
+  </footer>
+
+  <script>
+    // Particle System
+    (function(){
+      function createParticles(){
+        const container = document.getElementById('particles');
+        const count = 50;
+        for(let i=0;i<count;i++){
+          const d = document.createElement('div');
+          d.className='particle';
+          d.style.left = Math.random()*100+'%';
+          d.style.top = Math.random()*100+'%';
+          d.style.animationDuration = (10 + Math.random()*10) + 's';
+          d.style.animationDelay = (Math.random()*10) + 's';
+          container.appendChild(d);
+        }
+      }
+
+      // DOM ready
+      document.addEventListener('DOMContentLoaded', function(){
+        createParticles();
+
+        // Smooth scroll for internal links
+        document.querySelectorAll('a[href^="#"]').forEach(a=>{
+          a.addEventListener('click', function(e){
+            const href = this.getAttribute('href');
+            if(href && href.length>1){
+              const target = document.querySelector(href);
+              if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth',block:'start'}); }
+            }
+          });
+        });
+
+        // Ripple effect
+        document.querySelectorAll('.btn').forEach(btn=>{
+          btn.addEventListener('click', function(e){
+            const r = document.createElement('span'); r.className='ripple';
+            this.appendChild(r);
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size/2; const y = e.clientY - rect.top - size/2;
+            r.style.width = r.style.height = size+'px'; r.style.left = x+'px'; r.style.top = y+'px';
+            setTimeout(()=>r.remove(),600);
+          });
+        });
+      });
+    })();
+  </script>
 </body>
 </html>
