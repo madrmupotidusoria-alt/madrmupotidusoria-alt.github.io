@@ -8,6 +8,7 @@
     <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <style>
         body {
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
@@ -80,20 +81,59 @@
             border-color: #4b5563;
             box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
         }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #3b82f6;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
     <div id="root"></div>
     
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect } = React;
         const { createRoot } = ReactDOM;
+
+        // Supabase configuration
+        const supabaseUrl = 'https://sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72.supabase.co';
+        const supabaseKey = 'sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72';
+        const { createClient } = window.supabase;
+        const supabase = createClient(supabaseUrl, supabaseKey);
 
         function App() {
             const [isLoggedIn, setIsLoggedIn] = useState(false);
             const [showLogin, setShowLogin] = useState(false);
             const [showRegister, setShowRegister] = useState(false);
             const [currentPage, setCurrentPage] = useState('home');
+            const [user, setUser] = useState(null);
+            const [loading, setLoading] = useState(false);
+
+            // Check for existing session on mount
+            useEffect(() => {
+                const getSession = async () => {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    setUser(session?.user ?? null);
+                    setIsLoggedIn(!!session?.user);
+                };
+
+                getSession();
+
+                // Listen for auth changes
+                const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+                    setUser(session?.user ?? null);
+                    setIsLoggedIn(!!session?.user);
+                });
+
+                return () => subscription.unsubscribe();
+            }, []);
 
             const handleNavClick = (item) => {
                 if (item === 'Discord') {
@@ -121,35 +161,69 @@
                 setCurrentPage(item.toLowerCase());
             };
 
-            const handleLogin = (e) => {
+            const handleLogin = async (e) => {
                 e.preventDefault();
-                const username = e.target.username.value;
-                const password = e.target.password.value;
-                
-                if (username === 'tbny' && password === 'admin123') {
-                    setIsLoggedIn(true);
-                    setShowLogin(false);
-                    setCurrentPage('dashboard');
-                    alert('Login successful!');
-                } else {
-                    alert('Invalid credentials. Use tbny/admin123 for demo');
-                }
-            };
-
-            const handleRegister = (e) => {
-                e.preventDefault();
-                const username = e.target.username.value;
+                setLoading(true);
                 const email = e.target.email.value;
                 const password = e.target.password.value;
                 
-                setIsLoggedIn(true);
-                setShowRegister(false);
-                setCurrentPage('dashboard');
-                alert('Registration successful!');
+                try {
+                    const { data, error } = await supabase.auth.signInWithPassword({
+                        email,
+                        password,
+                    });
+                    
+                    if (error) {
+                        alert('Login error: ' + error.message);
+                    } else {
+                        setIsLoggedIn(true);
+                        setShowLogin(false);
+                        setCurrentPage('dashboard');
+                        alert('Login successful!');
+                    }
+                } catch (error) {
+                    alert('Login error: ' + error.message);
+                } finally {
+                    setLoading(false);
+                }
             };
 
-            const handleLogout = () => {
+            const handleRegister = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                const email = e.target.email.value;
+                const password = e.target.password.value;
+                const username = e.target.username.value;
+                
+                try {
+                    const { data, error } = await supabase.auth.signUp({
+                        email,
+                        password,
+                        options: {
+                            data: {
+                                username: username,
+                            }
+                        }
+                    });
+                    
+                    if (error) {
+                        alert('Registration error: ' + error.message);
+                    } else {
+                        alert('Registration successful! Please check your email to verify.');
+                        setShowRegister(false);
+                        setShowLogin(true);
+                    }
+                } catch (error) {
+                    alert('Registration error: ' + error.message);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const handleLogout = async () => {
+                await supabase.auth.signOut();
                 setIsLoggedIn(false);
+                setUser(null);
                 setCurrentPage('home');
             };
 
@@ -192,10 +266,10 @@
 
                             {showLogin && (
                                 <form onSubmit={handleLogin}>
-                                    <input name="username" type="text" placeholder="Username" className="form-input" style={{ width: '100%', padding: '12px', marginBottom: '16px', borderRadius: '8px' }} required />
+                                    <input name="email" type="email" placeholder="Email" className="form-input" style={{ width: '100%', padding: '12px', marginBottom: '16px', borderRadius: '8px' }} required />
                                     <input name="password" type="password" placeholder="Password" className="form-input" style={{ width: '100%', padding: '12px', marginBottom: '20px', borderRadius: '8px' }} required />
-                                    <button type="submit" className="btn-primary" style={{ width: '100%', padding: '12px', borderRadius: '8px', fontSize: '16px', fontWeight: '600' }}>
-                                        Login
+                                    <button type="submit" className="btn-primary" style={{ width: '100%', padding: '12px', borderRadius: '8px', fontSize: '16px', fontWeight: '600' }} disabled={loading}>
+                                        {loading ? <span className="loading"></span> : 'Login'}
                                     </button>
                                 </form>
                             )}
@@ -205,8 +279,8 @@
                                     <input name="username" type="text" placeholder="Username" className="form-input" style={{ width: '100%', padding: '12px', marginBottom: '16px', borderRadius: '8px' }} required />
                                     <input name="email" type="email" placeholder="Email" className="form-input" style={{ width: '100%', padding: '12px', marginBottom: '16px', borderRadius: '8px' }} required />
                                     <input name="password" type="password" placeholder="Password" className="form-input" style={{ width: '100%', padding: '12px', marginBottom: '20px', borderRadius: '8px' }} required />
-                                    <button type="submit" className="btn-primary" style={{ width: '100%', padding: '12px', borderRadius: '8px', fontSize: '16px', fontWeight: '600' }}>
-                                        Register
+                                    <button type="submit" className="btn-primary" style={{ width: '100%', padding: '12px', borderRadius: '8px', fontSize: '16px', fontWeight: '600' }} disabled={loading}>
+                                        {loading ? <span className="loading"></span> : 'Register'}
                                     </button>
                                 </form>
                             )}
@@ -235,7 +309,10 @@
                 return (
                     <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px' }}>
                         <div style={{ textAlign: 'center' }}>
-                            <h2 style={{ fontSize: '36px', fontWeight: 'bold', marginBottom: '40px' }}>SCANORA Dashboard</h2>
+                            <h2 style={{ fontSize: '36px', fontWeight: 'bold', marginBottom: '20px' }}>SCANORA Dashboard</h2>
+                            <p style={{ color: '#9ca3af', marginBottom: '40px' }}>
+                                Welcome back, {user?.user_metadata?.username || user?.email}!
+                            </p>
                             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '20px', maxWidth: '800px' }}>
                                 <div className="card" style={{ padding: '30px', borderRadius: '12px' }}>
                                     <h3 style={{ marginBottom: '10px' }}>Username Recon</h3>
