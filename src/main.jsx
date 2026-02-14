@@ -1,11 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
+import { supabase } from './supabaseClient.js';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentPage, setCurrentPage] = useState('home');
   const [showLogin, setShowLogin] = useState(false);
   const [showRegister, setShowRegister] = useState(false);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  // Check for existing session on mount
+  useEffect(() => {
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      setUser(session?.user ?? null);
+      setIsLoggedIn(!!session?.user);
+      setLoading(false);
+    };
+
+    getSession();
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+      setIsLoggedIn(!!session?.user);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const handleNavClick = (item) => {
     if (item === 'Discord') {
@@ -36,75 +60,70 @@ function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const username = formData.get('username');
+    const email = formData.get('email') || formData.get('username') + '@scanora.com';
     const password = formData.get('password');
     
     try {
-      const response = await fetch('https://scanora-backend.herokuapp.com/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
       
-      const data = await response.json();
-      
-      if (data.success) {
+      if (error) {
+        // Fallback to demo login for testing
+        if (formData.get('username') === 'tbny' && password === 'admin123') {
+          setIsLoggedIn(true);
+          setShowLogin(false);
+          setCurrentPage('dashboard');
+          alert('Demo login successful!');
+        } else {
+          alert(error.message || 'Login failed');
+        }
+      } else {
         setIsLoggedIn(true);
         setShowLogin(false);
         setCurrentPage('dashboard');
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-      } else {
-        alert(data.message || 'Login failed');
       }
     } catch (error) {
-      // Fallback to mock login for demo
-      if (username === 'tbny' && password === 'admin123') {
-        setIsLoggedIn(true);
-        setShowLogin(false);
-        setCurrentPage('dashboard');
-      } else {
-        alert('Invalid credentials. Use tbny/admin123 for demo');
-      }
+      alert('Login error: ' + error.message);
     }
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
-    const username = formData.get('username');
     const email = formData.get('email');
     const password = formData.get('password');
     
     try {
-      const response = await fetch('https://scanora-backend.herokuapp.com/api/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, email, password }),
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            username: formData.get('username'),
+          }
+        }
       });
       
-      const data = await response.json();
-      
-      if (data.success) {
+      if (error) {
+        alert(error.message || 'Registration failed');
+      } else {
         setIsLoggedIn(true);
         setShowRegister(false);
         setCurrentPage('dashboard');
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
-      } else {
-        alert(data.message || 'Registration failed');
+        alert('Registration successful! Please check your email to verify.');
       }
     } catch (error) {
-      // Fallback to mock registration for demo
-      setIsLoggedIn(true);
-      setShowRegister(false);
-      setCurrentPage('dashboard');
-      alert('Registration successful! (Demo mode)');
+      alert('Registration error: ' + error.message);
     }
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    setIsLoggedIn(false);
+    setUser(null);
+    setCurrentPage('home');
   };
 
   const renderContent = () => {
@@ -151,6 +170,14 @@ function App() {
                     placeholder="Username"
                     className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
                     required
+                  />
+                </div>
+                <div>
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="Email (optional)"
+                    className="w-full px-4 py-3 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
                   />
                 </div>
                 <div>
@@ -241,7 +268,7 @@ function App() {
             </div>
           </div>
           <button
-            onClick={() => setIsLoggedIn(false)}
+            onClick={handleLogout}
             className="mt-8 px-6 py-2 bg-red-600 hover:bg-red-700 rounded-lg transition duration-300"
           >
             Logout
