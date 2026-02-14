@@ -144,8 +144,8 @@
                 return null;
             }
             
-            const supabaseUrl = 'https://sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72.supabase.co';
-            const supabaseKey = 'sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72';
+            const supabaseUrl = 'https://i2050anxy9vykvbs0_gptg_j52bp_72.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImkyMDUwYW5YeTlWeUt2QnMwX0dwVGdfSjUyQlBfNzIiLCJpYXQiOjE3MzY4NzU4MDksImV4cCI6MjA1MjQ1MTgwOX0.w3kFjKJhQjJ9ZQYxVhJQJhQjJ9ZQYxVhJQJhQjJ9ZQYxVhJQ';
             const { createClient } = window.supabase;
             return createClient(supabaseUrl, supabaseKey);
         }
@@ -278,6 +278,8 @@
                 const username = e.target.username.value;
                 
                 try {
+                    console.log('Attempting registration with:', { email, username });
+                    
                     const { data, error } = await supabase.auth.signUp({
                         email,
                         password,
@@ -288,9 +290,13 @@
                         }
                     });
                     
+                    console.log('Registration response:', { data, error });
+                    
                     if (error) {
+                        console.error('Registration error:', error);
                         setError('Registration error: ' + error.message);
                     } else {
+                        console.log('Registration successful');
                         setError('');
                         // Success message
                         const successDiv = document.createElement('div');
@@ -306,7 +312,8 @@
                         setShowLogin(true);
                     }
                 } catch (error) {
-                    setError('Registration error: ' + error.message);
+                    console.error('Registration catch error:', error);
+                    setError('Registration failed: ' + error.message);
                 } finally {
                     setLoading(false);
                 }
