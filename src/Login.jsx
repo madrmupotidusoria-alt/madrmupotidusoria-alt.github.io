@@ -59,6 +59,21 @@ export default function Login() {
     setError('')
 
     try {
+      // Test connection first
+      console.log('Testing Supabase connection...')
+      const { data: testData, error: testError } = await supabase
+        .from('profiles')
+        .select('count')
+        .limit(1)
+      
+      if (testError) {
+        console.error('Connection test failed:', testError)
+        setError(`Connection error: ${testError.message}`)
+        return
+      }
+      
+      console.log('Connection test passed')
+
       // Check if account hash exists in Supabase
       const { data, error } = await supabase
         .from('profiles')
@@ -68,6 +83,7 @@ export default function Login() {
         .single()
 
       if (error) {
+        console.error('Login error:', error)
         setError('Login failed: ' + error.message)
       } else if (!data) {
         setError('Invalid account hash. Please check and try again.')
@@ -80,6 +96,7 @@ export default function Login() {
         window.location.hash = '#/dashboard'
       }
     } catch (error) {
+      console.error('Login catch error:', error)
       setError('Login failed: ' + error.message)
     } finally {
       setIsLoading(false)
