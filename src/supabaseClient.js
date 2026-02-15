@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Use environment variables in production
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://i2050anxy9vykvbs0-gptg-j52bp-72.supabase.co'
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImkyMDUwYW5YeTlWeUt2QnMwX0dwVGdfSjUyQlBfNzIiLCJpYXQiOjE3MzY4NzU4MDksImV4cCI6MjA1MjQ1MTgwOX0.w3kFjKJhQjJ9ZQYxVhJQJhQjJ9ZQYxVhJQ'
+// TODO: Replace with your actual Supabase credentials
+// Go to: Supabase Dashboard → Settings → API
+const supabaseUrl = 'https://wdbjtvxkatfyosarsrrv.supabase.co' // Your project URL
+const supabaseKey = 'sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72' // Your anon key
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
