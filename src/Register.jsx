@@ -44,6 +44,21 @@ export default function Register() {
     setSuccess('')
 
     try {
+      // Test Supabase connection first
+      console.log('Testing Supabase connection...')
+      const { data: testData, error: testError } = await supabase
+        .from('profiles')
+        .select('count')
+        .limit(1)
+      
+      if (testError) {
+        console.error('Connection test failed:', testError)
+        setError(`Connection error: ${testError.message}`)
+        return
+      }
+      
+      console.log('Connection test passed')
+
       // Generate 20-character hash
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
       let hash = ''
@@ -51,6 +66,8 @@ export default function Register() {
         hash += chars.charAt(Math.floor(Math.random() * chars.length))
       }
       setAccountHash(hash)
+
+      console.log('Generated hash:', hash)
 
       // Store in Supabase profiles table
       const { data, error } = await supabase
@@ -65,9 +82,10 @@ export default function Register() {
         ])
 
       if (error) {
-        setError('Failed to save account. Please try again.')
-        console.error('Supabase error:', error)
+        console.error('Supabase error details:', error)
+        setError(`Failed to save account: ${error.message}`)
       } else {
+        console.log('Supabase success:', data)
         setSuccess('Account hash generated successfully! Save this hash securely.')
       }
     } catch (error) {
