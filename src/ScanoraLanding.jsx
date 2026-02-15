@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export default function ScanoraLanding() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  useEffect(() => {
+    // Check authentication state
+    const accountHash = sessionStorage.getItem('accountHash')
+    setIsLoggedIn(!!accountHash)
+  }, [])
+
   const scrollToSection = (sectionId) => {
     const element = document.getElementById(sectionId);
     if (element) {
@@ -40,12 +48,14 @@ export default function ScanoraLanding() {
 
           <div className="flex gap-8 text-sm">
             {[
-              { label: 'Home', href: '#/', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+              { label: isLoggedIn ? 'Dashboard' : 'Home', href: isLoggedIn ? '#/dashboard' : '#/', action: isLoggedIn ? null : () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
               { label: 'Features', href: '#features', action: () => scrollToSection('features') },
               { label: 'Modules', href: '#modules', action: () => scrollToSection('modules') },
               { label: 'Records', href: '#records', action: () => scrollToSection('records') },
-              { label: 'Register', href: '#/register' },
-              { label: 'Login', href: '#/login' },
+              ...(isLoggedIn ? [] : [
+                { label: 'Register', href: '#/register' },
+                { label: 'Login', href: '#/login' }
+              ]),
               { label: 'Roster', href: '#/roster' },
               { label: 'Pricing', href: '#/pricing' },
             ].map((item, i) => (
@@ -75,7 +85,7 @@ export default function ScanoraLanding() {
             transition={{ duration: 1.2 }}
             className="text-5xl md:text-6xl font-bold max-w-4xl leading-tight"
           >
-            Advanced Digital Intelligence Platform
+            {isLoggedIn ? 'Welcome Back to SCANORA' : 'Advanced Digital Intelligence Platform'}
           </motion.h2>
 
           <motion.p
@@ -84,7 +94,10 @@ export default function ScanoraLanding() {
             transition={{ delay: 1, duration: 1.5 }}
             className="mt-6 text-gray-400 max-w-2xl text-lg"
           >
-            SCANORA represents the next generation of cyber intelligence tools, combining cutting-edge technology with intuitive design for maximum operational effectiveness.
+            {isLoggedIn 
+              ? 'Access your dashboard and manage your account settings.'
+              : 'SCANORA represents the next generation of cyber intelligence tools, combining cutting-edge technology with intuitive design for maximum operational effectiveness.'
+            }
           </motion.p>
 
           {/* Animated Button */}
@@ -92,9 +105,9 @@ export default function ScanoraLanding() {
             whileHover={{ scale: 1.1 }} 
             whileTap={{ scale: 0.95 }} 
             className="mt-10 px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-xl shadow-lg shadow-blue-500/30 transition"
-            onClick={() => scrollToSection('features')}
+            onClick={() => isLoggedIn ? window.location.hash = '#/dashboard' : scrollToSection('features')}
           >
-            Explore Features
+            {isLoggedIn ? 'Go to Dashboard' : 'Explore Features'}
           </motion.button>
 
           {/* Scroll Indicator */}
