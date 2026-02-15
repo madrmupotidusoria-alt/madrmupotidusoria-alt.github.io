@@ -150,9 +150,12 @@ export default function Roster() {
                 style={{
                   width: '96px',
                   height: '96px',
-                  borderRadius: '50%',
+                  borderRadius: '8px',
                   boxShadow: '0 0 20px rgba(180, 0, 255, 0.9)',
-                  marginBottom: '14px'
+                  marginBottom: '14px',
+                  display: 'block',
+                  marginLeft: 'auto',
+                  marginRight: 'auto'
                 }}
               />
               <span style={{
