@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SCANORA - Pricing</title>
+    <title>SCANORA - Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body { 
@@ -32,107 +32,109 @@
         }
     </style>
 </head>
-<body class="min-h-screen bg-black text-white p-8">
+<body class="min-h-screen bg-black text-white">
     <div class="glow"></div>
     
-    <header class="max-w-4xl mx-auto text-center mb-12 relative z-10">
-        <h1 class="text-4xl font-bold">Pricing</h1>
-        <p class="text-gray-400 mt-3">
-            Choose a plan that fits your operational needs.
-        </p>
-    </header>
-
-    <section class="max-w-4xl mx-auto grid gap-8 grid-cols-1 md:grid-cols-3 relative z-10">
-        <!-- Monthly Plan -->
-        <div class="border border-gray-800 rounded-xl p-6 bg-gray-900/30">
-            <h3 class="text-xl font-semibold mb-2">Monthly</h3>
-            <div class="text-3xl font-bold mb-2">
-                $5
-                <span class="text-base font-medium">/mo</span>
-            </div>
-            <p class="text-sm text-gray-400 mb-4">Monthly access to all features.</p>
-            <ul class="text-sm text-gray-300 mb-6 space-y-2">
-                <li>- Secure access</li>
-                <li>- Basic analytics</li>
-                <li>- Community support</li>
-            </ul>
-            <div class="flex gap-3">
-                <button class="flex-1 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700">
-                    Subscribe
-                </button>
-                <button class="px-3 py-2 border border-gray-700 rounded hover:bg-gray-800">
-                    Details
-                </button>
+    <!-- Navigation -->
+    <nav class="relative z-10 border-b border-gray-800">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-blue-400">SCANORA</h1>
+                </div>
+                <div class="flex items-center space-x-8">
+                    <a href="index.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
+                    <a href="pricing_plain.html" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Pricing</a>
+                    <a href="#contact" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                </div>
             </div>
         </div>
+    </nav>
 
-        <!-- Permanent Plan -->
-        <div class="border border-gray-800 rounded-xl p-6 bg-gray-900/30">
-            <h3 class="text-xl font-semibold mb-2">Permanent</h3>
-            <div class="text-3xl font-bold mb-2">
-                $15
-                <span class="text-base font-medium"></span>
+    <!-- Hero Section -->
+    <main class="relative z-10">
+        <section class="max-w-4xl mx-auto text-center py-20">
+            <h1 class="text-5xl font-bold mb-6">
+                Welcome to <span class="text-blue-400">SCANORA</span>
+            </h1>
+            <p class="text-xl text-gray-400 mb-8 max-w-2xl mx-auto">
+                Advanced scanning and security solutions for modern operations. Join our exclusive community today.
+            </p>
+            <div class="flex gap-4 justify-center">
+                <a href="pricing_plain.html" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold">
+                    View Pricing
+                </a>
+                <a href="#features" class="px-8 py-3 border border-gray-600 hover:bg-gray-800 rounded-lg font-semibold">
+                    Learn More
+                </a>
             </div>
-            <p class="text-sm text-gray-400 mb-4">Lifetime access to all features.</p>
-            <ul class="text-sm text-gray-300 mb-6 space-y-2">
-                <li>- Secure access</li>
-                <li>- Basic analytics</li>
-                <li>- Community support</li>
-                <li>- Lifetime updates</li>
-            </ul>
-            <div class="flex gap-3">
-                <button class="flex-1 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700">
-                    Subscribe
-                </button>
-                <button class="px-3 py-2 border border-gray-700 rounded hover:bg-gray-800">
-                    Details
-                </button>
-            </div>
-        </div>
+        </section>
 
-        <!-- To Be On Roster Plan -->
-        <div class="border border-gray-800 rounded-xl p-6 bg-gray-900/30">
-            <h3 class="text-xl font-semibold mb-2">To Be On Roster</h3>
-            <div class="text-3xl font-bold mb-2">
-                $50
-                <span class="text-base font-medium"></span>
+        <!-- Features Section -->
+        <section id="features" class="max-w-6xl mx-auto py-20">
+            <h2 class="text-3xl font-bold text-center mb-12">Features</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="border border-gray-800 rounded-xl p-6 bg-gray-900/30">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">Advanced Scanning</h3>
+                    <p class="text-gray-400">State-of-the-art scanning technology with real-time analysis and threat detection.</p>
+                </div>
+                <div class="border border-gray-800 rounded-xl p-6 bg-gray-900/30">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">Security First</h3>
+                    <p class="text-gray-400">Enterprise-grade security protocols to keep your data safe and secure.</p>
+                </div>
+                <div class="border border-gray-800 rounded-xl p-6 bg-gray-900/30">
+                    <h3 class="text-xl font-semibold mb-4 text-blue-400">24/7 Support</h3>
+                    <p class="text-gray-400">Round-the-clock support from our expert team to ensure smooth operations.</p>
+                </div>
             </div>
-            <p class="text-sm text-gray-400 mb-4">Get added to the official roster.</p>
-            <ul class="text-sm text-gray-300 mb-6 space-y-2">
-                <li>- Official roster listing</li>
-                <li>- Premium features</li>
-                <li>- Priority support</li>
-                <li>- Exclusive access</li>
-            </ul>
-            <div class="flex gap-3">
-                <button class="flex-1 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700">
-                    Subscribe
-                </button>
-                <button class="px-3 py-2 border border-gray-700 rounded hover:bg-gray-800">
-                    Details
-                </button>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <footer class="max-w-4xl mx-auto text-center text-gray-500 mt-12 relative z-10">
-        <p>Contact sales for invoices and bulk licensing.</p>
-        <p class="mt-2 text-yellow-500">
-            <a href="/" class="underline hover:text-yellow-400">
-                Click here to return to homepage
+        <!-- CTA Section -->
+        <section class="max-w-4xl mx-auto py-20 text-center">
+            <h2 class="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+            <p class="text-gray-400 mb-8">Join thousands of users who trust SCANORA for their security needs.</p>
+            <a href="pricing_plain.html" class="px-8 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold">
+                Choose Your Plan
             </a>
-        </p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="relative z-10 border-t border-gray-800 mt-20">
+        <div class="max-w-6xl mx-auto py-12 px-4">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold text-blue-400 mb-4">SCANORA</h3>
+                    <p class="text-gray-400">Advanced security solutions for the modern digital landscape.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2">
+                        <li><a href="pricing_plain.html" class="text-gray-400 hover:text-white">Pricing</a></li>
+                        <li><a href="#features" class="text-gray-400 hover:text-white">Features</a></li>
+                        <li><a href="#contact" class="text-gray-400 hover:text-white">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-semibold mb-4">Contact</h4>
+                    <p class="text-gray-400">Get in touch with our team for any questions or support.</p>
+                    <p class="text-gray-400 mt-2">support@scanora.com</p>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2026 SCANORA. All rights reserved.</p>
+            </div>
+        </div>
     </footer>
 
     <script>
-        // Simple JavaScript for button interactions
-        document.querySelectorAll('button').forEach(button => {
-            button.addEventListener('click', function() {
-                if (this.textContent.includes('Subscribe')) {
-                    alert('Please contact sales to complete your subscription.');
-                } else if (this.textContent.includes('Details')) {
-                    alert('Contact us for detailed plan information.');
-                }
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
             });
         });
     </script>
