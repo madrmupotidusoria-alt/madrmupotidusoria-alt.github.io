@@ -1,57 +1,87 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { supabase } from './supabaseClient'
 
 export default function Register() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [username, setUsername] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
+  const [captchaVerified, setCaptchaVerified] = useState(false)
+  const [accountHash, setAccountHash] = useState('')
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [copied, setCopied] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const handleRegister = async (e) => {
-    e.preventDefault()
-    
-    if (!email.trim() || !password.trim() || !username.trim()) {
-      setError('Please fill in all fields')
-      return
+  const generateCaptcha = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let captcha = ''
+    for (let i = 0; i < 6; i++) {
+      captcha += chars.charAt(Math.floor(Math.random() * chars.length))
     }
+    return captcha
+  }
 
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters')
-      return
+  const [captcha, setCaptcha] = useState(generateCaptcha())
+  const [userInput, setUserInput] = useState('')
+
+  const refreshCaptcha = () => {
+    setCaptcha(generateCaptcha())
+    setUserInput('')
+    setCaptchaVerified(false)
+  }
+
+  const verifyCaptcha = () => {
+    if (userInput === captcha) {
+      setCaptchaVerified(true)
+      setError('')
+    } else {
+      setError('Incorrect captcha. Please try again.')
+      refreshCaptcha()
     }
+  }
 
-    setIsLoading(true)
+  const generateAccountHash = async () => {
+    setIsGenerating(true)
     setError('')
     setSuccess('')
 
     try {
-      const { data, error } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            username: username,
+      // Generate 20-character hash
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+      let hash = ''
+      for (let i = 0; i < 20; i++) {
+        hash += chars.charAt(Math.floor(Math.random() * chars.length))
+      }
+      setAccountHash(hash)
+
+      // Store in Supabase profiles table
+      const { data, error } = await supabase
+        .from('profiles')
+        .insert([
+          {
+            account_hash: hash,
+            created_at: new Date().toISOString(),
+            is_active: true,
+            subscription_type: 'free'
           }
-        }
-      })
+        ])
 
       if (error) {
-        setError(error.message)
+        setError('Failed to save account. Please try again.')
+        console.error('Supabase error:', error)
       } else {
-        setSuccess('Registration successful! Please check your email to verify your account.')
-        // Redirect to login after 3 seconds
-        setTimeout(() => {
-          window.location.hash = '#/login'
-        }, 3000)
+        setSuccess('Account hash generated successfully! Save this hash securely.')
       }
     } catch (error) {
-      setError('Registration failed: ' + error.message)
+      setError('Failed to generate account hash. Please try again.')
+      console.error('Generation error:', error)
     } finally {
-      setIsLoading(false)
+      setIsGenerating(false)
     }
+  }
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(accountHash)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
   }
 
   const goToLogin = () => {
@@ -70,7 +100,7 @@ export default function Register() {
       >
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-blue-400 tracking-wider mb-2">SCANORA</h1>
-          <p className="text-gray-400">Create your account</p>
+          <p className="text-gray-400">Generate Your Account Hash</p>
         </div>
 
         {error && (
@@ -85,65 +115,87 @@ export default function Register() {
           </div>
         )}
 
-        <form onSubmit={handleRegister} className="space-y-6">
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Username</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
-              placeholder="Choose a username"
-              required
-            />
+        {/* Captcha Section */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-300 mb-2">Verify Captcha</label>
+          <div className="flex items-center gap-3 mb-3">
+            <div className="bg-gray-800 px-4 py-2 rounded border border-gray-700 font-mono text-lg select-none">
+              {captcha}
+            </div>
+            <button
+              onClick={refreshCaptcha}
+              className="px-3 py-2 bg-gray-700 hover:bg-gray-600 rounded transition-colors"
+            >
+              ↻
+            </button>
           </div>
+          <input
+            type="text"
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
+            className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
+            placeholder="Enter captcha code"
+            disabled={captchaVerified}
+          />
+          {!captchaVerified && (
+            <button
+              onClick={verifyCaptcha}
+              className="mt-3 w-full py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+            >
+              Verify Captcha
+            </button>
+          )}
+        </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Email</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
-              placeholder="Enter your email"
-              required
-            />
-          </div>
+        {/* Hash Generation Section */}
+        {captchaVerified && (
+          <div className="space-y-4">
+            <button
+              onClick={generateAccountHash}
+              disabled={isGenerating}
+              className="w-full py-3 bg-green-600 hover:bg-green-700 disabled:bg-green-800 disabled:cursor-not-allowed rounded-lg font-semibold transition duration-300 text-white"
+            >
+              {isGenerating ? (
+                <span className="flex items-center justify-center">
+                  <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  Generating...
+                </span>
+              ) : (
+                'Generate Account Hash'
+              )}
+            </button>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-300 mb-2">Password</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-blue-400 focus:ring-1 focus:ring-blue-400 transition-colors"
-              placeholder="Create a password"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed rounded-lg font-semibold transition duration-300 text-white"
-          >
-            {isLoading ? (
-              <span className="flex items-center justify-center">
-                <svg className="animate-spin h-5 w-5 mr-2" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
-                Creating account...
-              </span>
-            ) : (
-              'Create Account'
+            {accountHash && (
+              <div className="bg-gray-800 p-4 rounded-lg border border-gray-700">
+                <label className="block text-sm font-medium text-gray-300 mb-2">Your Account Hash</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={accountHash}
+                    readOnly
+                    className="flex-1 px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white font-mono text-lg"
+                  />
+                  <button
+                    onClick={copyToClipboard}
+                    className="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                  >
+                    {copied ? '✓' : 'Copy'}
+                  </button>
+                </div>
+                <p className="mt-3 text-xs text-red-400">
+                  ⚠️ Save this hash securely. You'll need it to login.
+                </p>
+              </div>
             )}
-          </button>
-        </form>
+          </div>
+        )}
 
         <div className="mt-6 text-center">
           <p className="text-gray-400 text-sm">
-            Already have an account?{' '}
+            Already have an account hash?{' '}
             <button
               onClick={goToLogin}
               className="text-blue-400 hover:text-blue-300 transition-colors"
