@@ -125,14 +125,35 @@ justify-content: space-between;
 align-items: center;
 }
 
+.logo {
+font-size: 24px;
+font-weight: bold;
+color: #3b82f6;
+text-decoration: none;
+letter-spacing: 2px;
+transition: all 0.3s ease;
+font-family: 'Nosifer', cursive;
+}
+
+.logo:hover {
+color: #60a5fa;
+text-shadow: 0 0 10px rgba(59,130,246,0.8);
+}
+
+.nav-links {
+display: flex;
+gap: 20px;
+align-items: center;
+}
+
 .nav a {
 color: #3b82f6;
 text-decoration: none;
-margin: 0 15px;
-font-size: 16px;
-font-family: 'Nosifer', cursive;
-letter-spacing: 2px;
+font-size: 14px;
+font-weight: 500;
+letter-spacing: 1px;
 transition: all 0.3s ease;
+font-family: 'Nosifer', cursive;
 }
 
 .nav a:hover {
@@ -149,9 +170,17 @@ text-shadow: 0 0 15px rgba(59,130,246,1);
 <body>
 
 <div class="nav">
-<a href="index.html">HOME</a>
-<a href="roster.html" class="active">ROSTER</a>
-<a href="dashboard.html">DASHBOARD</a>
+<a href="index.html" class="logo">SCANORA</a>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="roster.html" class="active">Roster</a>
+<a href="features.html">Features</a>
+<a href="pricing.html">Pricing</a>
+<a href="register.html">Register</a>
+<a href="login.html">Login</a>
+<a href="https://discord.gg" target="_blank">Discord</a>
+<a href="dashboard.html">Dashboard</a>
+</div>
 </div>
 
 <div class="stars"></div>
