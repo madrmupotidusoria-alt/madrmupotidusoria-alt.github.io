@@ -110,7 +110,7 @@ letter-spacing:4px
 }
 
 /* Navigation */
-header {
+header.navbar {
 width: 100%;
 background: linear-gradient(to right, #0b1630, #1a2f6b, #0b1630);
 position: fixed;
@@ -143,14 +143,13 @@ color: #60a5fa;
 text-shadow: 0 0 10px rgba(59,130,246,0.8);
 }
 
-nav {
+.nav-links {
 display: flex;
 align-items: center;
 gap: 2rem;
-margin-left: auto;
 }
 
-nav a {
+.nav-links a {
 color: #ffffff;
 text-decoration: none;
 font-size: 0.875rem;
@@ -160,12 +159,12 @@ transition: all 0.3s ease;
 font-family: 'Nosifer', cursive;
 }
 
-nav a:hover {
+.nav-links a:hover {
 color: #60a5fa;
 text-shadow: 0 0 10px rgba(59,130,246,0.8);
 }
 
-nav a.active {
+.nav-links a.active {
 color: #60a5fa;
 text-shadow: 0 0 15px rgba(59,130,246,1);
 }
@@ -173,17 +172,17 @@ text-shadow: 0 0 15px rgba(59,130,246,1);
 </head>
 <body>
 
-<header>
+<header class="navbar">
 <div class="header-content">
 <a href="index.html" class="logo">SCANORA</a>
-<nav>
+<nav class="nav-links">
 <a href="index.html">Home</a>
 <a href="roster.html" class="active">Roster</a>
 <a href="features.html">Features</a>
 <a href="pricing.html">Pricing</a>
 <a href="register.html">Register</a>
 <a href="login.html">Login</a>
-<a href="https://discord.gg" target="_blank">Discord</a>
+<a href="https://t.me/YOUR_LINK" target="_blank">Telegram</a>
 <a href="dashboard.html">Dashboard</a>
 </nav>
 </div>
