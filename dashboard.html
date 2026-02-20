@@ -304,6 +304,105 @@ background: #00b894;
 color: #ffffff;
 }
 
+/* Account Section */
+.account-section {
+padding: 20px;
+border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.account-header {
+display: flex;
+align-items: center;
+gap: 12px;
+margin-bottom: 20px;
+}
+
+.account-avatar {
+position: relative;
+}
+
+.avatar-img {
+width: 40px;
+height: 40px;
+border-radius: 50%;
+border: 2px solid rgba(59,130,246,0.5);
+}
+
+.status-indicator {
+position: absolute;
+bottom: 2px;
+right: 2px;
+width: 12px;
+height: 12px;
+border-radius: 50%;
+border: 2px solid #0f0f14;
+}
+
+.status-indicator.online {
+background: #00b894;
+}
+
+.status-indicator.offline {
+background: #636e72;
+}
+
+.status-indicator.away {
+background: #fdcb6e;
+}
+
+.account-info {
+flex: 1;
+}
+
+.account-name {
+color: #ffffff;
+font-weight: 600;
+font-size: 14px;
+margin-bottom: 2px;
+}
+
+.account-role {
+color: rgba(255,255,255,0.6);
+font-size: 12px;
+}
+
+.account-menu {
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+
+.account-item {
+padding: 10px 16px;
+color: rgba(255,255,255,0.7);
+text-decoration: none;
+display: flex;
+align-items: center;
+gap: 12px;
+font-size: 13px;
+border-radius: 6px;
+transition: all 0.3s ease;
+}
+
+.account-item:hover {
+color: #ffffff;
+background: rgba(255,255,255,0.05);
+}
+
+.account-item.logout {
+color: #ff4757;
+}
+
+.account-item.logout:hover {
+background: rgba(255,71,87,0.1);
+}
+
+.account-item i {
+width: 16px;
+text-align: center;
+font-size: 12px;
+}
+
 /* Main Content */
 .main-content {
 flex: 1;
@@ -1010,6 +1109,48 @@ IP Intelligence
 </div>
 
 </div>
+</div>
+
+<!-- Account Section -->
+<div class="account-section">
+<div class="account-header">
+<div class="account-avatar">
+<img src="https://picsum.photos/seed/user-avatar/40/40.jpg" alt="User Avatar" class="avatar-img">
+<div class="status-indicator online"></div>
+</div>
+<div class="account-info">
+<div class="account-name">John Doe</div>
+<div class="account-role">Premium User</div>
+</div>
+</div>
+<div class="account-menu">
+<a href="#" class="account-item">
+<i class="fas fa-user"></i>
+Profile
+</a>
+<a href="#" class="account-item">
+<i class="fas fa-cog"></i>
+Settings
+</a>
+<a href="#" class="account-item">
+<i class="fas fa-bell"></i>
+Notifications
+</a>
+<a href="#" class="account-item">
+<i class="fas fa-shield-alt"></i>
+Security
+</a>
+<a href="#" class="account-item">
+<i class="fas fa-credit-card"></i>
+Billing
+</a>
+<a href="#" class="account-item logout">
+<i class="fas fa-sign-out-alt"></i>
+Logout
+</a>
+</div>
+</div>
+
 </div>
 
 <!-- Main Content -->
