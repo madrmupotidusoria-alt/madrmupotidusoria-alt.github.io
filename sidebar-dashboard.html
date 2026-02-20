@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SCANORA - Dashboard</title>
+<title>SCANORA - OSINT Dashboard</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 <style>
@@ -21,7 +21,7 @@ color: #ffffff;
 }
 
 /* Navigation */
-header {
+header.navbar {
 width: 100%;
 background: linear-gradient(to right, #0b1630, #1a2f6b, #0b1630);
 position: fixed;
@@ -57,7 +57,6 @@ text-shadow: 0 0 10px rgba(59,130,246,0.8);
 display: flex;
 align-items: center;
 gap: 2rem;
-margin-left: auto;
 }
 
 .nav-links a {
@@ -77,25 +76,6 @@ text-shadow: 0 0 10px rgba(59,130,246,0.8);
 .nav-links a.active {
 color: #60a5fa;
 text-shadow: 0 0 15px rgba(59,130,246,1);
-}
-
-.user-menu {
-display: flex;
-align-items: center;
-gap: 15px;
-}
-
-.user-avatar {
-width: 35px;
-height: 35px;
-border-radius: 50%;
-background: linear-gradient(135deg, #3b82f6, #60a5fa);
-display: flex;
-align-items: center;
-justify-content: center;
-font-weight: bold;
-color: white;
-border: 2px solid rgba(59,130,246,0.5);
 }
 
 /* Dashboard Layout */
@@ -381,284 +361,10 @@ padding: 10px 15px;
 padding: 8px 15px 8px 35px;
 }
 }
-
-/* Header Section */
-.dashboard-header {
-margin-bottom: 40px;
-}
-
-.welcome-text {
-font-size: 32px;
-font-weight: 700;
-margin-bottom: 10px;
-background: linear-gradient(135deg, #3b82f6, #60a5fa);
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-background-clip: text;
-}
-
-.subtitle {
-color: rgba(255,255,255,0.7);
-font-size: 16px;
-}
-
-/* Stats Grid */
-.stats-grid {
-display: grid;
-grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-gap: 25px;
-margin-bottom: 40px;
-}
-
-.stat-card {
-background: rgba(30,58,138,0.7);
-backdrop-filter: blur(10px);
-border: 1px solid rgba(59,130,246,0.3);
-border-radius: 16px;
-padding: 25px;
-box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-transition: all 0.3s ease;
-}
-
-.stat-card:hover {
-transform: translateY(-5px);
-box-shadow: 0 12px 40px rgba(59,130,246,0.3);
-border-color: rgba(59,130,246,0.5);
-}
-
-.stat-icon {
-width: 50px;
-height: 50px;
-background: linear-gradient(135deg, #3b82f6, #60a5fa);
-border-radius: 12px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 24px;
-margin-bottom: 15px;
-}
-
-.stat-value {
-font-size: 32px;
-font-weight: 700;
-margin-bottom: 5px;
-color: #ffffff;
-}
-
-.stat-label {
-color: rgba(255,255,255,0.7);
-font-size: 14px;
-}
-
-.stat-change {
-font-size: 12px;
-margin-top: 10px;
-padding: 4px 8px;
-border-radius: 6px;
-background: rgba(34,197,94,0.2);
-color: #22c55e;
-}
-
-.stat-change.negative {
-background: rgba(239,68,68,0.2);
-color: #ef4444;
-}
-
-/* Main Content Grid */
-.content-grid {
-display: grid;
-grid-template-columns: 2fr 1fr;
-gap: 25px;
-}
-
-/* Activity Section */
-.activity-section {
-background: rgba(30,58,138,0.7);
-backdrop-filter: blur(10px);
-border: 1px solid rgba(59,130,246,0.3);
-border-radius: 16px;
-padding: 25px;
-box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-}
-
-.section-title {
-font-size: 20px;
-font-weight: 600;
-margin-bottom: 20px;
-color: #ffffff;
-}
-
-.activity-list {
-display: flex;
-flex-direction: column;
-gap: 15px;
-}
-
-.activity-item {
-display: flex;
-align-items: center;
-gap: 15px;
-padding: 15px;
-background: rgba(59,130,246,0.1);
-border-radius: 10px;
-border: 1px solid rgba(59,130,246,0.2);
-transition: all 0.3s ease;
-}
-
-.activity-item:hover {
-background: rgba(59,130,246,0.2);
-border-color: rgba(59,130,246,0.4);
-}
-
-.activity-icon {
-width: 40px;
-height: 40px;
-background: linear-gradient(135deg, #3b82f6, #60a5fa);
-border-radius: 10px;
-display: flex;
-align-items: center;
-justify-content: center;
-font-size: 18px;
-}
-
-.activity-content {
-flex: 1;
-}
-
-.activity-title {
-font-weight: 500;
-margin-bottom: 3px;
-color: #ffffff;
-}
-
-.activity-time {
-font-size: 12px;
-color: rgba(255,255,255,0.6);
-}
-
-/* Quick Actions */
-.quick-actions {
-background: rgba(30,58,138,0.7);
-backdrop-filter: blur(10px);
-border: 1px solid rgba(59,130,246,0.3);
-border-radius: 16px;
-padding: 25px;
-box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-}
-
-.action-buttons {
-display: flex;
-flex-direction: column;
-gap: 12px;
-}
-
-.action-btn {
-padding: 12px 20px;
-background: linear-gradient(135deg, #3b82f6, #60a5fa);
-border: none;
-border-radius: 10px;
-color: white;
-font-weight: 500;
-cursor: pointer;
-transition: all 0.3s ease;
-text-align: left;
-font-size: 14px;
-}
-
-.action-btn:hover {
-transform: translateX(5px);
-box-shadow: 0 5px 20px rgba(59,130,246,0.4);
-}
-
-.action-btn.secondary {
-background: rgba(59,130,246,0.2);
-border: 1px solid rgba(59,130,246,0.3);
-}
-
-/* Progress Section */
-.progress-section {
-background: rgba(30,58,138,0.7);
-backdrop-filter: blur(10px);
-border: 1px solid rgba(59,130,246,0.3);
-border-radius: 16px;
-padding: 25px;
-box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-margin-top: 25px;
-}
-
-.progress-item {
-margin-bottom: 20px;
-}
-
-.progress-header {
-display: flex;
-justify-content: space-between;
-margin-bottom: 8px;
-}
-
-.progress-label {
-font-weight: 500;
-color: #ffffff;
-}
-
-.progress-value {
-color: rgba(255,255,255,0.7);
-font-size: 14px;
-}
-
-.progress-bar {
-height: 8px;
-background: rgba(59,130,246,0.2);
-border-radius: 4px;
-overflow: hidden;
-}
-
-.progress-fill {
-height: 100%;
-background: linear-gradient(90deg, #3b82f6, #60a5fa);
-border-radius: 4px;
-transition: width 0.3s ease;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-.content-grid {
-grid-template-columns: 1fr;
-}
-  
-.nav-links {
-display: none;
-}
-  
-.stats-grid {
-grid-template-columns: 1fr;
-}
-  
-.dashboard-container {
-padding: 100px 15px 40px;
-}
-}
-
-/* Animations */
-@keyframes fadeIn {
-from {
-opacity: 0;
-transform: translateY(20px);
-}
-to {
-opacity: 1;
-transform: translateY(0);
-}
-}
-
-.stat-card, .activity-section, .quick-actions, .progress-section {
-animation: fadeIn 0.6s ease-out;
-}
 </style>
 </head>
 <body>
 
-<!-- Navigation -->
 <header class="navbar">
 <div class="header-content">
 <a href="index.html" class="logo">SCANORA</a>
@@ -670,12 +376,11 @@ animation: fadeIn 0.6s ease-out;
 <a href="register.html">Register</a>
 <a href="login.html">Login</a>
 <a href="https://t.me/+HjaEjByF35llOTNl" target="_blank">Telegram</a>
-<a href="dashboard.html" class="active">Dashboard</a>
+<a href="sidebar-dashboard.html" class="active">Dashboard</a>
 </nav>
 </div>
 </header>
 
-<!-- Dashboard Container -->
 <div class="dashboard-container">
 
 <!-- Sidebar -->
@@ -1041,6 +746,7 @@ IP Intelligence
 </div>
 
 </div>
+
 <script>
 function toggleCategory(header) {
 const content = header.nextElementSibling;
