@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SCANORA - Advanced OSINT Platform</title>
+    <title>SCANORA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -118,6 +118,18 @@
             color: #ffffff;
             font-weight: 600;
             font-size: 18px;
+        }
+
+        .logo-img {
+            height: 32px;
+            width: auto;
+            filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.3));
+            transition: all 0.3s ease;
+        }
+
+        .logo:hover .logo-img {
+            filter: drop-shadow(0 0 15px rgba(99, 102, 241, 0.5));
+            transform: scale(1.05);
         }
 
         .logo-icon {
@@ -420,6 +432,7 @@
     <nav class="nav-container">
         <div class="nav-bar">
             <a href="#" class="logo">
+                <img src="https://i.ibb.co/3s6F9FJ/SCANORA.png" alt="SCANORA Logo" class="logo-img">
                 <div class="logo-icon">S</div>
                 <span>SCANORA</span>
             </a>
