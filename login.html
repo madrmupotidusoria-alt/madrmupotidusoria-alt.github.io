@@ -323,16 +323,47 @@
 
         // Initialize error system
         let errorSystem;
+        
+        // Simple test function to verify buttons work
+        function testButtons() {
+            console.log('Testing button functionality...');
+            const buttons = document.querySelectorAll('button');
+            console.log('Found buttons:', buttons.length);
+            buttons.forEach((btn, index) => {
+                console.log(`Button ${index}:`, btn.textContent, btn.disabled);
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing...');
+            testButtons();
+            
+            // Test form submit button directly
+            const loginForm = document.getElementById('loginForm');
+            const submitBtn = loginForm.querySelector('.auth-button');
+            
+            if (submitBtn) {
+                console.log('Submit button found, adding click test...');
+                submitBtn.addEventListener('click', function(e) {
+                    console.log('Button clicked!', e);
+                    alert('Button click test successful!');
+                });
+            } else {
+                console.error('Submit button not found!');
+            }
+            
             try {
                 errorSystem = new ErrorSystem();
+                console.log('ErrorSystem loaded successfully');
             } catch (e) {
                 console.error('ErrorSystem not loaded:', e);
                 errorSystem = {
                     handleError: function(type, message) {
+                        console.error('Error:', type, message);
                         alert(message);
                     },
                     showSuccess: function(message) {
+                        console.log('Success:', message);
                         alert(message);
                     }
                 };
