@@ -2,8 +2,8 @@
 // Initialize Supabase with your credentials
 const { createClient } = supabase;
 const supabase = createClient(
-    'https://kvydgqwpzowhmzjzsmpi.supabase.co',
-    'sb_publishable_i7aw3LIiaJotv_2FS3Ip1w_sxYi7L4Q'
+    'https://wdbjtvxkatfyosarsrrv.supabase.co',
+    'sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72'
 );
 
 // User Registration
