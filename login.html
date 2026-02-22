@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - SCANORA</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="components/ErrorSystem.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script src="components/ErrorSystem.js"></script>
+</head>
+<body class="auth-page">
+    <!-- Particles Background -->
+    <div id="particles" class="particles"></div>
+
+    <!-- Login Container -->
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Logo -->
+            <div class="auth-logo">
+                <img src="/frontend/logo.png" alt="SCANORA" class="logo-img">
+                <h1>SCANORA</h1>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <h2>Welcome Back</h2>
+                <p class="auth-subtitle">Login to your SCANORA account</p>
+
+                <!-- Username Field -->
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" class="form-input" placeholder="Enter your username" required>
+                    <span class="error-message" id="usernameError"></span>
+                </div>
+
+                <!-- Password Field -->
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="auth-button">
+                    <span class="button-text">Login</span>
+                    <div class="button-loader" style="display: none;">
+                        <div class="loader"></div>
+                    </div>
+                </button>
+
+                <!-- Register Link -->
+                <div class="auth-link">
+                    <span>Don't have an account? <a href="register.html">Register here</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Initialize Supabase
+        const { createClient } = supabase;
+        const supabase = createClient('https://wdbjtvxkatfyosarsrrv.supabase.co', 'sb_publishable_i2050anXy9VyKvBs0_GpTg_J52BP_72');
+
+        // Initialize error system
+        let errorSystem;
+        document.addEventListener('DOMContentLoaded', function() {
+            errorSystem = new ErrorSystem();
+            generateParticles();
+        });
+
+        // Generate particles
+        function generateParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            
+            // Clear previous errors
+            clearErrors();
+            
+            // Validate username
+            const username = document.getElementById('username').value.trim();
+            if (!username) {
+                showError('usernameError', 'Username is required');
+                isValid = false;
+            }
+            
+            // Validate password
+            const password = document.getElementById('password').value;
+            if (!password) {
+                showError('passwordError', 'Password is required');
+                isValid = false;
+            }
+            
+            return isValid;
+        }
+
+        // Show error message
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            const inputElement = document.getElementById(elementId.replace('Error', ''));
+            
+            errorElement.textContent = message;
+            inputElement.classList.add('error');
+        }
+
+        // Clear all errors
+        function clearErrors() {
+            document.querySelectorAll('.error-message').forEach(error => {
+                error.textContent = '';
+            });
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.classList.remove('error');
+            });
+        }
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (!validateForm()) {
+                return;
+            }
+            
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            
+            // Show loading state
+            const submitButton = e.target.querySelector('.auth-button');
+            const buttonText = submitButton.querySelector('.button-text');
+            const buttonLoader = submitButton.querySelector('.button-loader');
+            
+            buttonText.style.display = 'none';
+            buttonLoader.style.display = 'block';
+            submitButton.disabled = true;
+            
+            try {
+                // For now, we'll use email as username@domain.com for Supabase auth
+                // In a real implementation, you'd have a custom auth system
+                const email = `${username}@scanora.local`;
+                
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+                
+                if (error) {
+                    if (error.message.includes('Invalid login credentials')) {
+                        errorSystem.handleError('INVALID_CREDENTIALS', 'Invalid username or password');
+                    } else {
+                        errorSystem.handleError('LOGIN_ERROR', error.message);
+                    }
+                    return;
+                }
+                
+                // Successful login
+                errorSystem.showSuccess('Login successful! Redirecting...');
+                
+                // Redirect to main page after delay
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 1500);
+                
+            } catch (error) {
+                errorSystem.handleError('LOGIN_ERROR', 'An unexpected error occurred');
+            } finally {
+                // Hide loading state
+                buttonText.style.display = 'block';
+                buttonLoader.style.display = 'none';
+                submitButton.disabled = false;
+            }
+        });
+
+        // Clear error on input
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('input', function() {
+                const errorElement = document.getElementById(this.id + 'Error');
+                if (errorElement) {
+                    errorElement.textContent = '';
+                    this.classList.remove('error');
+                }
+            });
+        });
+    </script>
+
+    <style>
+        /* Auth Page Styles */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+        }
+
+        .auth-card {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        .auth-logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .auth-logo .logo-img {
+            height: 50px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+            transition: opacity 0.3s ease;
+        }
+
+        .auth-logo .logo-img:hover {
+            opacity: 1;
+        }
+
+        .auth-logo h1 {
+            color: #f1f5f9;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.025em;
+        }
+
+        .auth-form h2 {
+            color: #f1f5f9;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .auth-subtitle {
+            color: #94a3b8;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            color: #e2e8f0;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(148, 163, 184, 0.2);
+            border-radius: 12px;
+            color: #f1f5f9;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .form-input.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+        }
+
+        .error-message {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 4px;
+            display: block;
+            min-height: 16px;
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 14px 20px;
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            border: none;
+            border-radius: 12px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-button:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px -5px rgba(59, 130, 246, 0.5);
+        }
+
+        .auth-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .button-loader {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loader {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-top: 2px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .auth-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .auth-link span {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .auth-link a {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .auth-link a:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 480px) {
+            .auth-container {
+                padding: 10px;
+            }
+            
+            .auth-card {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</body>
+</html>

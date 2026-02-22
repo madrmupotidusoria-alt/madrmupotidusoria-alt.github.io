@@ -155,6 +155,17 @@
             box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
         }
 
+        .nav-user {
+            padding: 8px 16px;
+            color: #ffffff;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+        }
+
         /* Hero Section */
         .hero {
             display: flex;
@@ -539,8 +550,8 @@
             <div class="nav-links">
                 <a href="https://discord.gg/xtce" target="_blank" class="nav-link">Discord</a>
                 <a href="https://t.me/+HjaEjByF35llOTNl" target="_blank" class="nav-link">Telegram</a>
-                <a href="#" class="nav-link" onclick="showRegister()">Register</a>
-                <a href="#" class="nav-link" onclick="showLogin()">Login</a>
+                <a href="register.html" class="nav-link">Register</a>
+                <a href="login.html" class="nav-link">Login</a>
                 <a href="#" class="nav-link">API Docs</a>
             </div>
         </div>
@@ -579,16 +590,13 @@
         </div>
 
         <!-- Advanced Options -->
-        <div class="advanced-options">
-            <div class="advanced-toggle" onclick="toggleAdvanced()">
+        <div class="search-types">
+            <div class="search-selection-info">
                 <span>Advanced Options</span>
-                <i class="fas fa-chevron-down" id="advancedIcon"></i>
             </div>
-            <div class="advanced-content" id="advancedContent">
-                <div class="advanced-type-row">
-                    <button class="search-type-btn" data-advanced="wildcard">Wildcard Search</button>
-                    <button class="search-type-btn" data-advanced="case">Case Sensitive</button>
-                </div>
+            <div class="search-type-row">
+                <button class="search-type-btn" data-advanced="wildcard">Wildcard</button>
+                <button class="search-type-btn" data-advanced="case">Case Sensitive</button>
             </div>
         </div>
     </main>
@@ -602,23 +610,43 @@
         async function checkAuthState() {
             const { data: { session } } = await supabase.auth.getSession();
             if (session) {
-                updateAuthUI(true);
+                updateAuthUI(true, session.user);
             } else {
                 updateAuthUI(false);
             }
         }
 
-        // Handle Logout
+        // Update UI based on auth state
+        function updateAuthUI(isLoggedIn, user = null) {
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (isLoggedIn && user) {
+                // Show user info and logout
+                navLinks.innerHTML = `
+                    <a href="https://discord.gg/xtce" target="_blank" class="nav-link">Discord</a>
+                    <a href="https://t.me/+HjaEjByF35llOTNl" target="_blank" class="nav-link">Telegram</a>
+                    <span class="nav-user">Welcome, ${user.user_metadata?.username || 'User'}</span>
+                    <a href="#" class="nav-link" onclick="handleLogout()">Logout</a>
+                    <a href="#" class="nav-link">API Docs</a>
+                `;
+            } else {
+                // Show login/register
+                navLinks.innerHTML = `
+                    <a href="https://discord.gg/xtce" target="_blank" class="nav-link">Discord</a>
+                    <a href="https://t.me/+HjaEjByF35llOTNl" target="_blank" class="nav-link">Telegram</a>
+                    <a href="register.html" class="nav-link">Register</a>
+                    <a href="login.html" class="nav-link">Login</a>
+                    <a href="#" class="nav-link">API Docs</a>
+                `;
+            }
+        }
+
+        // Handle logout
         async function handleLogout() {
             try {
-                const result = await logoutUser();
-                
-                if (result.success) {
-                    errorSystem.showSuccess('Logged out successfully');
-                    updateAuthUI(false);
-                } else {
-                    errorSystem.handleError('LOGOUT_ERROR', result.error);
-                }
+                await supabase.auth.signOut();
+                errorSystem.showSuccess('Logged out successfully');
+                updateAuthUI(false);
             } catch (error) {
                 errorSystem.handleError('LOGOUT_ERROR', error.message);
             }
@@ -651,15 +679,6 @@
                 updateSelectionCount();
             });
         });
-
-        // Advanced options toggle
-        function toggleAdvanced() {
-            const content = document.getElementById('advancedContent');
-            const icon = document.getElementById('advancedIcon');
-            
-            content.classList.toggle('show');
-            icon.style.transform = content.classList.contains('show') ? 'rotate(180deg)' : 'rotate(0)';
-        }
 
         // Search function
         async function performSearch() {
@@ -761,51 +780,10 @@
             }
         }
 
-        // Show Register Modal
-        function showRegister() {
-            const modal = document.createElement('div');
-            modal.className = 'auth-modal';
-            modal.innerHTML = `
-                <div class="auth-content">
-                    <div class="auth-header">
-                        <h2>Create Account</h2>
-                        <button class="close-btn" onclick="closeModal()">&times;</button>
-                    </div>
-                    <form class="auth-form" onsubmit="handleRegister(event)">
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" name="email" required placeholder="Enter your email">
-                        </div>
-                        <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" name="username" required placeholder="Choose a username">
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" name="password" required placeholder="Create a strong password">
-                        </div>
-                        <div class="form-group">
-                            <label>Confirm Password</label>
-                            <input type="password" name="confirmPassword" required placeholder="Confirm your password">
-                        </div>
-                        <button type="submit" class="auth-button">Create Account</button>
-                    </form>
-                </div>
-            `;
-            document.body.appendChild(modal);
-        }
-
-        // Close Modal
-        function closeModal() {
-            const modal = document.querySelector('.auth-modal');
-            if (modal) {
-                modal.remove();
-            }
-        }
-
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             generateParticles();
+            checkAuthState();
         });
 
         // Enter key search
