@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - SCANORA</title>
+    <title>Login - SCANORA</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -265,7 +265,7 @@
     <!-- Particles Background -->
     <div id="particles" class="particles"></div>
 
-    <!-- Register Container -->
+    <!-- Login Container -->
     <div class="auth-container">
         <div class="auth-card">
             <!-- Logo -->
@@ -274,43 +274,36 @@
                 <h1>SCANORA</h1>
             </div>
 
-            <!-- Register Form -->
-            <form id="registerForm" class="auth-form">
-                <h2>Create Account</h2>
-                <p class="auth-subtitle">Join SCANORA and start searching</p>
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <h2>Welcome Back</h2>
+                <p class="auth-subtitle">Login to your SCANORA account</p>
 
                 <!-- Username Field -->
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" class="form-input" placeholder="Choose a username" required>
+                    <input type="text" id="username" name="username" class="form-input" placeholder="Enter your username" required>
                     <span class="error-message" id="usernameError"></span>
                 </div>
 
                 <!-- Password Field -->
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" class="form-input" placeholder="Create a password" required>
+                    <input type="password" id="password" name="password" class="form-input" placeholder="Enter your password" required>
                     <span class="error-message" id="passwordError"></span>
-                </div>
-
-                <!-- Confirm Password Field -->
-                <div class="form-group">
-                    <label for="confirmPassword">Confirm Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-input" placeholder="Confirm your password" required>
-                    <span class="error-message" id="confirmPasswordError"></span>
                 </div>
 
                 <!-- Submit Button -->
                 <button type="submit" class="auth-button">
-                    <span class="button-text">Register</span>
+                    <span class="button-text">Login</span>
                     <div class="button-loader" style="display: none;">
                         <div class="loader"></div>
                     </div>
                 </button>
 
-                <!-- Login Link -->
+                <!-- Register Link -->
                 <div class="auth-link">
-                    <span>Already have an account? <a href="login.html">Login here</a></span>
+                    <span>Don't have an account? <a href="register.html">Register here</a></span>
                 </div>
             </form>
         </div>
@@ -355,28 +348,12 @@
             if (!username) {
                 showError('usernameError', 'Username is required');
                 isValid = false;
-            } else if (username.length < 3) {
-                showError('usernameError', 'Username must be at least 3 characters');
-                isValid = false;
             }
             
             // Validate password
             const password = document.getElementById('password').value;
             if (!password) {
                 showError('passwordError', 'Password is required');
-                isValid = false;
-            } else if (password.length < 6) {
-                showError('passwordError', 'Password must be at least 6 characters');
-                isValid = false;
-            }
-            
-            // Validate confirm password
-            const confirmPassword = document.getElementById('confirmPassword').value;
-            if (!confirmPassword) {
-                showError('confirmPasswordError', 'Please confirm your password');
-                isValid = false;
-            } else if (password !== confirmPassword) {
-                showError('confirmPasswordError', 'Passwords do not match');
                 isValid = false;
             }
             
@@ -402,25 +379,8 @@
             });
         }
 
-        // Check if username exists
-        async function checkUsernameExists(username) {
-            try {
-                // Check user_profiles table for existing username
-                const { data, error } = await supabase
-                    .from('user_profiles')
-                    .select('username')
-                    .eq('username', username)
-                    .single();
-                
-                return !error && data;
-            } catch (error) {
-                console.error('Username check error:', error);
-                return false;
-            }
-        }
-
-        // Handle registration form submission
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             if (!validateForm()) {
@@ -440,63 +400,33 @@
             submitButton.disabled = true;
             
             try {
-                // Check if username already exists
-                const usernameExists = await checkUsernameExists(username);
-                if (usernameExists) {
-                    showError('usernameError', 'Username already taken');
-                    return;
-                }
-                
-                // For Supabase auth, we need an email. We'll use username@scanora.local
+                // For now, we'll use email as username@domain.com for Supabase auth
+                // In a real implementation, you'd have a custom auth system
                 const email = `${username}@scanora.local`;
                 
-                const { data, error } = await supabase.auth.signUp({
+                const { data, error } = await supabase.auth.signInWithPassword({
                     email: email,
-                    password: password,
-                    options: {
-                        data: {
-                            username: username
-                        },
-                        emailRedirectTo: window.location.origin + '/login.html',
-                        skipEmailVerification: true
-                    }
+                    password: password
                 });
                 
                 if (error) {
-                    if (error.message.includes('already registered')) {
-                        errorSystem.handleError('USERNAME_EXISTS', 'Username already taken');
+                    if (error.message.includes('Invalid login credentials')) {
+                        errorSystem.handleError('INVALID_CREDENTIALS', 'Invalid username or password');
                     } else {
-                        errorSystem.handleError('REGISTER_ERROR', error.message);
+                        errorSystem.handleError('LOGIN_ERROR', error.message);
                     }
                     return;
                 }
                 
-                // Save user profile data to user_profiles table
-                if (data?.user?.id) {
-                    const { error: profileError } = await supabase
-                        .from('user_profiles')
-                        .insert({
-                            user_id: data.user.id,
-                            username: username,
-                            email: email,
-                            created_at: new Date().toISOString()
-                        });
-                    
-                    if (profileError) {
-                        console.error('Profile creation error:', profileError);
-                        errorSystem.handleError('PROFILE_ERROR', 'Account created but profile setup failed');
-                    }
-                }
+                // Successful login
+                console.log('Login successful, preparing to redirect...');
+                errorSystem.showSuccess('Login successful! Redirecting to main page...');
                 
-                // Successful registration
-                console.log('Registration successful, preparing to redirect...');
-                errorSystem.showSuccess('Account created successfully! Redirecting to login...');
-                
-                // Force redirect to login page
-                window.location.replace('login.html');
+                // Force redirect to main landing page
+                window.location.replace('index');
                 
             } catch (error) {
-                errorSystem.handleError('REGISTER_ERROR', 'An unexpected error occurred');
+                errorSystem.handleError('LOGIN_ERROR', 'An unexpected error occurred');
             } finally {
                 // Hide loading state
                 buttonText.style.display = 'block';
@@ -505,73 +435,9 @@
             }
         });
 
-        // Debounce function to prevent excessive API calls
-        function debounce(func, wait) {
-            let timeout;
-            return function executedFunction(...args) {
-                const later = () => {
-                    clearTimeout(timeout);
-                    func(...args);
-                };
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-            };
-        }
-
-        // Real-time validation
-        document.getElementById('username').addEventListener('input', debounce(async function() {
-            const username = this.value.trim();
-            const errorElement = document.getElementById('usernameError');
-            
-            if (username && username.length < 3) {
-                errorElement.textContent = 'Username must be at least 3 characters';
-                this.classList.add('error');
-            } else if (username && username.length >= 3) {
-                // Check username availability in real-time
-                const exists = await checkUsernameExists(username);
-                if (exists) {
-                    errorElement.textContent = 'Username is already taken';
-                    this.classList.add('error');
-                } else {
-                    errorElement.textContent = '';
-                    this.classList.remove('error');
-                }
-            } else {
-                errorElement.textContent = '';
-                this.classList.remove('error');
-            }
-        }, 500)); // 500ms debounce delay
-
-        document.getElementById('password').addEventListener('input', function() {
-            const password = this.value;
-            const errorElement = document.getElementById('passwordError');
-            
-            if (password && password.length < 6) {
-                errorElement.textContent = 'Password must be at least 6 characters';
-                this.classList.add('error');
-            } else {
-                errorElement.textContent = '';
-                this.classList.remove('error');
-            }
-        });
-
-        document.getElementById('confirmPassword').addEventListener('input', function() {
-            const password = document.getElementById('password').value;
-            const confirmPassword = this.value;
-            const errorElement = document.getElementById('confirmPasswordError');
-            
-            if (confirmPassword && password !== confirmPassword) {
-                errorElement.textContent = 'Passwords do not match';
-                this.classList.add('error');
-            } else {
-                errorElement.textContent = '';
-                this.classList.remove('error');
-            }
-        });
-
-        // Clear error on focus
+        // Clear error on input
         document.querySelectorAll('.form-input').forEach(input => {
-            input.addEventListener('focus', function() {
+            input.addEventListener('input', function() {
                 const errorElement = document.getElementById(this.id + 'Error');
                 if (errorElement) {
                     errorElement.textContent = '';
