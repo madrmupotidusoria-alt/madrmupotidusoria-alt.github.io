@@ -663,6 +663,14 @@
 
         // Search function
         async function performSearch() {
+            // Check if user is logged in first
+            const { data: { session } } = await supabase.auth.getSession();
+            
+            if (!session) {
+                errorSystem.handleError('AUTH_REQUIRED', 'Please log in or register to search');
+                return;
+            }
+            
             const searchValue = document.getElementById('searchInput').value.toLowerCase().trim();
             const activeTypes = Array.from(document.querySelectorAll('.search-type-btn.active'))
                 .map(btn => btn.dataset.type || btn.dataset.advanced);
