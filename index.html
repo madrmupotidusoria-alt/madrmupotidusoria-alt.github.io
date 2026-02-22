@@ -8,9 +8,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/ogl@0.0.93/dist/ogl.umd.js"></script>
     <script src="supabase.js"></script>
     <script src="components/ErrorSystem.js"></script>
-    <script src="supabase.js"></script>
+    <script src="components/Aurora.js"></script>
+    <link href="components/Aurora.css" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -537,10 +541,9 @@
     </style>
 </head>
 <body>
-    <!-- Background -->
-    <div class="bg-gradient"></div>
-    <div class="bg-particles" id="particles"></div>
-
+    <!-- Aurora Background -->
+    <div id="aurora-container"></div>
+    
     <!-- Navigation -->
     <nav class="nav-container">
         <div class="nav-bar">
@@ -783,7 +786,20 @@
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            generateParticles();
+            // Initialize Aurora background
+            const auroraContainer = document.getElementById('aurora-container');
+            if (auroraContainer) {
+                const { createElement } = React;
+                const AuroraComponent = Aurora({
+                    colorStops: ['#5227FF', '#7cff67', '#5227FF'],
+                    amplitude: 1.0,
+                    blend: 0.5,
+                    speed: 2.0
+                });
+                const auroraElement = createElement(AuroraComponent);
+                ReactDOM.render(auroraElement, auroraContainer);
+            }
+            
             checkAuthState();
         });
 
