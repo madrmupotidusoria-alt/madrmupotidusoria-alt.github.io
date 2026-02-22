@@ -419,12 +419,11 @@
                 }
                 
                 // Successful login
-                errorSystem.showSuccess('Login successful! Redirecting...');
+                console.log('Login successful, redirecting...');
+                errorSystem.showSuccess('Login successful! Redirecting to main page...');
                 
-                // Redirect to main page after delay
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 1500);
+                // Redirect to main page immediately
+                window.location.href = 'index.html';
                 
             } catch (error) {
                 errorSystem.handleError('LOGIN_ERROR', 'An unexpected error occurred');

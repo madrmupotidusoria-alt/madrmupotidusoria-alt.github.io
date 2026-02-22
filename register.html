@@ -472,10 +472,14 @@
                 }
                 
                 // Successful registration
+                console.log('Registration successful, redirecting...');
                 errorSystem.showSuccess('Account created successfully! Redirecting to login...');
                 
-                // Redirect to login page immediately
-                window.location.href = 'login.html';
+                // Redirect to login page after a short delay to ensure success message shows
+                setTimeout(() => {
+                    console.log('Redirecting to login page...');
+                    window.location.href = 'login.html';
+                }, 1000);
                 
             } catch (error) {
                 errorSystem.handleError('REGISTER_ERROR', 'An unexpected error occurred');
