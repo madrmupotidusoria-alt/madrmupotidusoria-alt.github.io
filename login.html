@@ -344,15 +344,13 @@
         function generateAurora() {
             const auroraContainer = document.getElementById('aurora-container');
             if (auroraContainer) {
-                const { createElement } = React;
-                const AuroraComponent = Aurora({
-                    colorStops: ['#5227FF', '#7cff67', '#5227FF'],
+                const auroraCanvas = Aurora({
+                    colorStops: ['#ff66fa', '#B19EEF', '#e629ff'],
                     amplitude: 1.0,
-                    blend: 0.5,
+                    blend: 1.0,
                     speed: 2.0
                 });
-                const auroraElement = createElement(AuroraComponent);
-                ReactDOM.render(auroraElement, auroraContainer);
+                auroraContainer.appendChild(auroraCanvas);
             }
         }
 
