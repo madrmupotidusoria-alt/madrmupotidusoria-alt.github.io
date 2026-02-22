@@ -8,6 +8,8 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="supabase.js"></script>
+    <script src="components/ErrorSystem.js"></script>
+    <script src="supabase.js"></script>
     <style>
         * {
             margin: 0;
@@ -606,6 +608,22 @@
             }
         }
 
+        // Handle Logout
+        async function handleLogout() {
+            try {
+                const result = await logoutUser();
+                
+                if (result.success) {
+                    errorSystem.showSuccess('Logged out successfully');
+                    updateAuthUI(false);
+                } else {
+                    errorSystem.handleError('LOGOUT_ERROR', result.error);
+                }
+            } catch (error) {
+                errorSystem.handleError('LOGOUT_ERROR', error.message);
+            }
+        }
+
         // Generate particles
         function generateParticles() {
             const particlesContainer = document.getElementById('particles');
@@ -644,23 +662,95 @@
         }
 
         // Search function
-        function performSearch() {
-            const searchValue = document.getElementById('searchInput').value;
+        async function performSearch() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase().trim();
             const activeTypes = Array.from(document.querySelectorAll('.search-type-btn.active'))
                 .map(btn => btn.dataset.type || btn.dataset.advanced);
             
-            if (!searchValue.trim()) {
-                alert('Please enter a search term');
+            if (!searchValue) {
+                errorSystem.handleError('NO_SEARCH_TERM', 'Please enter a search term');
                 return;
             }
             
             if (activeTypes.length === 0) {
-                alert('Please select at least one search type');
+                errorSystem.handleError('NO_SEARCH_TYPES', 'Please select at least one search type');
                 return;
             }
             
-            console.log(`Searching for ${searchValue} in types: ${activeTypes.join(', ')}`);
-            // Add your search logic here
+            // Show loading state
+            const searchButton = document.querySelector('.search-button');
+            searchButton.textContent = 'Searching...';
+            searchButton.disabled = true;
+            
+            try {
+                let query = supabase.from('breach_records').select('*');
+                
+                // Build query based on search types
+                activeTypes.forEach(type => {
+                    switch(type) {
+                        case 'email':
+                            query = query.ilike('email', `%${searchValue}%`);
+                            break;
+                        case 'username':
+                            query = query.ilike('username', `%${searchValue}%`);
+                            break;
+                        case 'name':
+                            query = query.ilike('full_name', `%${searchValue}%`);
+                            break;
+                        case 'ip':
+                            query = query.eq('ip_address', searchValue);
+                            break;
+                        case 'password':
+                            query = query.ilike('password_hash', `%${searchValue}%`);
+                            break;
+                        case 'phone':
+                            query = query.ilike('phone', `%${searchValue}%`);
+                            break;
+                        case 'domain':
+                            // This would require additional domain parsing logic
+                            break;
+                        case 'uuid':
+                            query = query.ilike('id', `%${searchValue}%`);
+                            break;
+                        case 'steam':
+                        case 'discord':
+                            // These would require additional fields
+                            break;
+                    }
+                });
+                
+                // Execute search
+                const { data: results, error } = await query;
+                
+                if (error) {
+                    errorSystem.handleError('DATABASE_ERROR', 'Database connection failed. Please try again.');
+                    throw error;
+                }
+                
+                // Log search for analytics
+                await supabase.from('search_logs').insert({
+                    search_query: searchValue,
+                    search_types: activeTypes,
+                    results_count: results.length,
+                    ip_address: 'unknown', // You can get this from a service
+                    user_agent: navigator.userAgent
+                });
+                
+                // Display results
+                if (results.length === 0) {
+                    errorSystem.handleError('NO_RESULTS', 'No results found for your search');
+                } else {
+                    errorSystem.showSuccess(`Found ${results.length} result${results.length !== 1 ? 's' : ''}!`);
+                    displayResults(results);
+                }
+                
+            } catch (error) {
+                errorSystem.handleError('API_TIMEOUT', 'Request timed out. Please try again.');
+            } finally {
+                // Reset button state
+                searchButton.textContent = 'Search!';
+                searchButton.disabled = false;
+            }
         }
 
         // Show Register Modal
