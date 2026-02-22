@@ -342,15 +342,25 @@
 
         // Generate Aurora background
         function generateAurora() {
+            console.log('Generating Aurora background...');
             const auroraContainer = document.getElementById('aurora-container');
             if (auroraContainer) {
-                const auroraCanvas = Aurora({
-                    colorStops: ['#ff66fa', '#B19EEF', '#e629ff'],
-                    amplitude: 1.0,
-                    blend: 1.0,
-                    speed: 2.0
-                });
-                auroraContainer.appendChild(auroraCanvas);
+                try {
+                    const auroraCanvas = Aurora({
+                        colorStops: ['#ff66fa', '#B19EEF', '#e629ff'],
+                        amplitude: 1.0,
+                        blend: 1.0,
+                        speed: 2.0
+                    });
+                    auroraContainer.appendChild(auroraCanvas);
+                    console.log('Aurora background generated successfully');
+                } catch (error) {
+                    console.error('Error generating Aurora:', error);
+                    // Fallback to simple gradient background
+                    auroraContainer.style.background = 'linear-gradient(135deg, #ff66fa, #B19EEF, #e629ff)';
+                }
+            } else {
+                console.error('Aurora container not found');
             }
         }
 
