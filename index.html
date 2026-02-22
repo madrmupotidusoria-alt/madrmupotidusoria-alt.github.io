@@ -126,7 +126,21 @@
             transition: opacity 0.3s ease;
         }
 
-        .logo:hover .logo-img {
+        .logo-text {
+            height: 36px;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: 20px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: transparent;
+            margin-right: 12px;
+        }
+
+        .logo:hover .logo-text {
             opacity: 0.8;
         }
 
@@ -385,7 +399,7 @@
     <nav class="nav-container">
         <div class="nav-bar">
             <a href="#" class="logo">
-                <img src="https://madrmupotidusoria-alt.github.io/logo.png" alt="SCANORA" class="logo-img">
+                <div class="logo-text">SCANORA</div>
                 <span>SCANORA</span>
             </a>
             <div class="nav-links">
