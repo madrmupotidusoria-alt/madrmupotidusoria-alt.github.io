@@ -255,6 +255,18 @@
             margin-bottom: 40px;
         }
 
+        .search-selection-info {
+            text-align: center;
+            margin-bottom: 16px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+        }
+
+        .search-selection-info #selectedCount {
+            color: #6366f1;
+            font-weight: 600;
+        }
+
         .search-type-row {
             display: flex;
             gap: 12px;
@@ -432,8 +444,11 @@
 
         <!-- Search Type Selector -->
         <div class="search-types">
+            <div class="search-selection-info">
+                <span id="selectedCount">0</span> types selected
+            </div>
             <div class="search-type-row">
-                <button class="search-type-btn active" data-type="email">Email</button>
+                <button class="search-type-btn" data-type="email">Email</button>
                 <button class="search-type-btn" data-type="username">Username</button>
                 <button class="search-type-btn" data-type="name">Name</button>
                 <button class="search-type-btn" data-type="password">Password</button>
@@ -484,10 +499,15 @@
         }
 
         // Search type selection
+        function updateSelectionCount() {
+            const activeCount = document.querySelectorAll('.search-type-btn.active').length;
+            document.getElementById('selectedCount').textContent = activeCount;
+        }
+
         document.querySelectorAll('.search-type-btn').forEach(btn => {
             btn.addEventListener('click', function() {
-                document.querySelectorAll('.search-type-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
+                this.classList.toggle('active');
+                updateSelectionCount();
             });
         });
 
@@ -508,14 +528,20 @@
         // Search function
         function performSearch() {
             const searchValue = document.getElementById('searchInput').value;
-            const activeType = document.querySelector('.search-type-btn.active').dataset.type;
+            const activeTypes = Array.from(document.querySelectorAll('.search-type-btn.active'))
+                .map(btn => btn.dataset.type);
             
             if (!searchValue.trim()) {
                 alert('Please enter a search term');
                 return;
             }
             
-            console.log(`Searching for ${searchValue} with type ${activeType}`);
+            if (activeTypes.length === 0) {
+                alert('Please select at least one search type');
+                return;
+            }
+            
+            console.log(`Searching for ${searchValue} in types: ${activeTypes.join(', ')}`);
             // Add your search logic here
         }
 
