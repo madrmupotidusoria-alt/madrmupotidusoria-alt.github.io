@@ -405,7 +405,7 @@
         // Check if username exists
         async function checkUsernameExists(username) {
             try {
-                // For now, we'll check if a user with this username exists in user_profiles
+                // Check user_profiles table for existing username
                 const { data, error } = await supabase
                     .from('user_profiles')
                     .select('username')
@@ -414,6 +414,7 @@
                 
                 return !error && data;
             } catch (error) {
+                console.error('Username check error:', error);
                 return false;
             }
         }
@@ -486,19 +487,42 @@
             }
         });
 
+        // Debounce function to prevent excessive API calls
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
         // Real-time validation
-        document.getElementById('username').addEventListener('input', function() {
+        document.getElementById('username').addEventListener('input', debounce(async function() {
             const username = this.value.trim();
             const errorElement = document.getElementById('usernameError');
             
             if (username && username.length < 3) {
                 errorElement.textContent = 'Username must be at least 3 characters';
                 this.classList.add('error');
+            } else if (username && username.length >= 3) {
+                // Check username availability in real-time
+                const exists = await checkUsernameExists(username);
+                if (exists) {
+                    errorElement.textContent = 'Username is already taken';
+                    this.classList.add('error');
+                } else {
+                    errorElement.textContent = '';
+                    this.classList.remove('error');
+                }
             } else {
                 errorElement.textContent = '';
                 this.classList.remove('error');
             }
-        });
+        }, 500)); // 500ms debounce delay
 
         document.getElementById('password').addEventListener('input', function() {
             const password = this.value;
