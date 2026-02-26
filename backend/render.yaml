@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: scanora-backend
+    env: node
+    plan: free
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3001
+      - key: DATABASE_URL
+        value: postgresql://postgres:b5be688c10b59493c27e6bfe7310c871@raja.db.elephantsql.com:5432/postgres
+      - key: ELASTIC_NODE
+        value: https://a18a8ba90fcc4a03887b9829907c68c4.us-central1.gcp.cloud.es.io:443
+      - key: ELASTIC_API_KEY
+        sync: false
